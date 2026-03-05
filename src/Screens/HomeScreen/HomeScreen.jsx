@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { WorkspaceContext } from '../../Context/WorkspaceContext'
+import { Link } from 'react-router-dom'
 
 
 
@@ -26,7 +27,9 @@ const HomeScreen = () => {
                 )
             }
             {
-                workspace_list.data.workspaces && workspace_list.data.workspaces.length === 0 && <span>No tienes workspaces</span>
+                workspace_list.data.workspaces && workspace_list.data.workspaces.length === 0 && <span>
+                    No tienes workspaces <Link to="/create-workspace">Crear workspace nuevo</Link>
+                    </span>
             }
         </div>
     )

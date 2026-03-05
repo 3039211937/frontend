@@ -1,0 +1,119 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Contenedor principal */
+.login-container {
+  background: white;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* Título */
+.login-container h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #1d1c1d;
+}
+
+/* Formulario */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Grupo de input */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #1d1c1d;
+}
+
+.form-group input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #611f69; /* violeta Slack */
+  box-shadow: 0 0 0 3px rgba(97, 31, 105, 0.15);
+}
+
+/* Botón */
+.login-button {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #611f69;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.login-button:hover {
+  background-color: #4a154b;
+}
+
+.login-button:disabled {
+  background-color: #c4c4c4;
+  cursor: not-allowed;
+}
+
+/* Mensajes */
+.error-message {
+  color: #e01e5a;
+  font-size: 14px;
+}
+
+.success-message {
+  color: #2eb67d;
+  font-size: 14px;
+}
+
+/* Link de registro */
+.register-text {
+  margin-top: 24px;
+  font-size: 14px;
+}
+
+.register-text a {
+  color: #611f69;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}

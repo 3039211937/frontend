@@ -1,0 +1,121 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Contenedor principal */
+.register-container {
+    background: #ffffff;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 460px;
+    border-radius: 8px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* Título */
+.register-container h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #1d1c1d;
+}
+
+/* Formulario */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Grupo de campos */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1d1c1d;
+}
+
+.form-group input {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #611f69;
+    box-shadow: 0 0 0 3px rgba(97, 31, 105, 0.15);
+}
+
+/* Botón */
+.register-button {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #611f69;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.register-button:hover {
+    background-color: #4a154b;
+}
+
+.register-button:disabled {
+    background-color: #c4c4c4;
+    cursor: not-allowed;
+}
+
+/* Mensajes */
+.error-message {
+    color: #e01e5a;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.success-message {
+    color: #2eb67d;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+/* Texto inferior */
+.login-text {
+    margin-top: 22px;
+    font-size: 14px;
+}
+
+.login-text a {
+    color: #611f69;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-text a:hover {
+    text-decoration: underline;
+}

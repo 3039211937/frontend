@@ -18,7 +18,7 @@ fecth recibe 2 paremetros
 - Un objeto de configuracion
 */
 
-const URL_API = import.meta.env.VITE_API_URL
+const URL_API = import.meta.env.VITE_API_URL /* 'http://localhost:8080' */
 
 export async function login(email, password) {
     const response_http = await fetch(
@@ -26,6 +26,7 @@ export async function login(email, password) {
         {
             method: 'POST',
             headers: {
+                'x-api-key': import.meta.env.VITE_API_KEY,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(
@@ -49,6 +50,7 @@ export async function register(username, password, email) {
         {
             method: 'POST',
             headers: {
+                 'x-api-key': import.meta.env.VITE_API_KEY,
                 'Content-Type': 'application/json', //Configuramos que voy enviar JSON en la peticion
             },
             body: JSON.stringify( //transforma un Object a JSON en formato string

@@ -4,6 +4,7 @@ import useForm from '../../hooks/useForm'
 import { register } from '../../services/authService'
 import useRequest from '../../hooks/useRequest'
 import useRegister from '../../hooks/userRegister'
+import "./RegisterScreen.css"
 
 const RegisterScreen = () => {
     const {
@@ -15,10 +16,12 @@ const RegisterScreen = () => {
         response
     } = useRegister()
     return (
-        <div>
+        <div className="register-container">
             <h1>Registrate en la aplicacion</h1>
-            <form onSubmit={onSubmitForm}>
-                <div>
+
+            <form onSubmit={onSubmitForm} className="register-form">
+
+                <div className="form-group">
                     <label htmlFor="username">Nombre de usuario:</label>
                     <input
                         type="text"
@@ -28,7 +31,8 @@ const RegisterScreen = () => {
                         onChange={onChangeFieldValue}
                     />
                 </div>
-                <div>
+
+                <div className="form-group">
                     <label htmlFor="password">Contraseña:</label>
                     <input
                         type="password"
@@ -38,7 +42,8 @@ const RegisterScreen = () => {
                         onChange={onChangeFieldValue}
                     />
                 </div>
-                <div>
+
+                <div className="form-group">
                     <label htmlFor="email">Email:</label>
                     <input
                         type="email"
@@ -48,23 +53,26 @@ const RegisterScreen = () => {
                         onChange={onChangeFieldValue}
                     />
                 </div>
-                {
-                    error && <span style={{ color: 'red' }}>{error.message}</span>
-                }
-                {
-                    response
-                    &&
-                    response.ok
-                    &&
-                    <span style={{ color: 'yellowgreen' }}>
+
+                {error && <span className="error-message">{error.message}</span>}
+
+                {response && response.ok && (
+                    <span className="success-message">
                         Usuario registrado exitosamente, te enviaremos un mail con instrucciones.
                     </span>
-                }
-                <br />
-                <button type="submit" disabled={loading}>Registrarse</button>
+                )}
+
+                <button
+                    type="submit"
+                    className="register-button"
+                    disabled={loading}
+                >
+                    Registrarse
+                </button>
             </form>
-            <span>
-                Ya tienes una cuenta? <Link to="/login">iniciar sesion</Link>
+
+            <span className="login-text">
+                Ya tienes una cuenta? <Link to="/login">Iniciar sesion</Link>
             </span>
         </div>
     )
