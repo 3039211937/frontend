@@ -14,25 +14,33 @@ const HomeScreen = () => {
         return <span>Loading...</span>
     }
 
-    return (
+   return (
+    <div>
+        <h1>Bienvenido nuevamente</h1>
+
+        {workspace_list_error && (
+        <span>{workspace_list_error.message}</span>
+        )}
+
+        {workspace_list?.data?.workspaces?.length > 0 ? (
         <div>
-            <h1>Bienvenido nuevamente</h1>
-            
-            {
-                workspace_list_error && <span>{workspace_list_error.message}</span>
-            }
-            {
-                workspace_list.data.workspaces && workspace_list.data.workspaces.length > 0 && workspace_list.data.workspaces.map(
-                    workspace => <div key={workspace.workspace_id}>{workspace.workspace_title}</div>
-                )
-            }
-            {
-                workspace_list.data.workspaces && workspace_list.data.workspaces.length === 0 && <span>
-                    No tienes workspaces <Link to="/create-workspace">Crear workspace nuevo</Link>
-                    </span>
-            }
+            {workspace_list.data.workspaces.map((workspace) => (
+            <div key={workspace.workspace_id}>
+                <Link to={`/workspaces/${workspace.workspace_id}`}>
+                {workspace.workspace_title}
+                </Link>
+            </div>
+            ))}
         </div>
-    )
+        ) : (
+        <span>No tienes workspaces</span>
+        )}
+
+        <div style={{ marginTop: "20px" }}>
+        <Link to="/create-workspace">+ Crear nuevo workspace</Link>
+        </div>
+    </div>
+    );
 }
 
 export default HomeScreen
