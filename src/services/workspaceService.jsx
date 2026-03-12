@@ -38,3 +38,24 @@ export async function createWorkspace(workspace_data) {
     }
     return response
 }
+
+export async function getWorkspaceById(workspace_id) {
+    const response_http = await fetch(
+        URL_API + '/api/workspace/' + workspace_id,
+        {
+            method: 'GET',
+            headers: {
+                'x-api-key': import.meta.env.VITE_API_KEY,
+                'Authorization': 'Bearer ' + localStorage.getItem('auth_token'),
+            },
+        }
+    )
+
+    const response = await response_http.json()
+
+    if (!response.ok) {
+        throw new ServerError(response.message, response.status)
+    }
+
+    return response
+}
