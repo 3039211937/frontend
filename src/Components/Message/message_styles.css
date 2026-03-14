@@ -1,0 +1,82 @@
+.message {
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 8px;
+    max-width: 500px;
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    background-color: rgb(216,253,210);
+    overflow: hidden;
+}
+
+.message-container {
+    margin-top: 70px;
+    display: flex;
+}
+
+.message-container--right{
+    display: flex;
+    justify-content: end;
+    margin-right: 45px;
+}
+
+.message-container--left{
+    display: flex;
+    justify-content: start;
+    margin-left: 45px;
+}
+
+.message-time {
+    display: flex;
+    justify-content: flex-end;
+    color: rgb(133, 126, 155);
+    font-size: 11px;
+    white-space: nowrap;
+    margin-top: 5px;
+    align-self: flex-end;
+}
+
+@media screen and (max-width: 1280px) {
+    .message-container--right{
+        margin-right: 35px;
+    }
+    .message-container--left{
+    margin-left: 35px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+        .message-container--right{
+        margin-right: 15px;
+    }
+    .message-container--left{
+    margin-left: 15px;
+    }
+}
+
+@media screen and (max-width: 985px) {
+        .message-container--right{
+        margin-left: 30px;
+    }
+    .message-container--left{
+    margin-right: 30px;
+    }
+}
+
+@media screen and (max-width: 875px) {
+        .message-container--right{
+        margin-right: 5px;
+    }
+    .message-container--left{
+    margin-left: 5px;
+    }
+}
+
+
