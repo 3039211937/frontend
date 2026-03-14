@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 
-import { getWorkspaceById } from "../../services/workspaceService";
+import {
+  getWorkspaceById,
+  inviteWorkspaceMember,
+} from "../../services/workspaceService";
+
 import ChannelListContextProvider, {
   ChannelListContext,
 } from "../../Context/ChannelListContext";
@@ -70,6 +74,10 @@ export default function WorkspaceScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState("Member");
+
   useEffect(() => {
     async function loadWorkspace() {
       try {
@@ -87,6 +95,21 @@ export default function WorkspaceScreen() {
 
     loadWorkspace();
   }, [workspace_id]);
+
+  const handleInvite = async () => {
+    try {
+      await inviteWorkspaceMember(workspace_id, inviteEmail, inviteRole);
+
+      alert("Invitación enviada correctamente");
+
+      setInviteEmail("");
+      setInviteRole("Member");
+      setShowInviteModal(false);
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
 
   if (loading) return <span>Loading...</span>;
   if (error) return <span>{error}</span>;
@@ -106,7 +129,22 @@ export default function WorkspaceScreen() {
 
           <div className="no-messages-container">
             <div className="workspace-header">
-              <h1>{workspace.title}</h1>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <h1>{workspace.title}</h1>
+
+                <button
+                  className="btn-create-small"
+                  onClick={() => setShowInviteModal(true)}
+                >
+                  Invitar usuario
+                </button>
+              </div>
 
               {workspace.description && <p>{workspace.description}</p>}
 
@@ -129,6 +167,41 @@ export default function WorkspaceScreen() {
           </div>
         </div>
       </div>
+
+      {showInviteModal && (
+        <div className="invite-modal-overlay">
+          <div className="invite-modal">
+            <h2>Invitar usuario</h2>
+
+            <label>Email</label>
+            <input
+              type="email"
+              value={inviteEmail}
+              onChange={(e) => setInviteEmail(e.target.value)}
+              placeholder="usuario@email.com"
+            />
+
+            <label>Rol</label>
+            <select
+              value={inviteRole}
+              onChange={(e) => setInviteRole(e.target.value)}
+            >
+              <option value="Member">Member</option>
+              <option value="Admin">Admin</option>
+            </select>
+
+            <div className="invite-actions">
+              <button onClick={() => setShowInviteModal(false)}>
+                Cancelar
+              </button>
+
+              <button onClick={handleInvite} disabled={!inviteEmail}>
+                Invitar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </ChannelListContextProvider>
   );
 }

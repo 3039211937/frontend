@@ -13,11 +13,17 @@ const HomeScreen = () => {
 
   const handleLogout = async () => {
     try {
+      // Call backend logout (optional but good practice)
       await logout();
-      navigate("/login");
     } catch (error) {
-      console.error(error);
+      console.error("Logout API failed:", error);
     }
+
+    // Always clear local session
+    localStorage.removeItem("auth_token");
+
+    // Redirect to login
+    navigate("/login", { replace: true });
   };
 
   if (workspace_list_loading || !workspace_list) {
@@ -53,9 +59,11 @@ const HomeScreen = () => {
                 <div className="workspace-icon">
                   {workspace.workspace_title.charAt(0).toUpperCase()}
                 </div>
+
                 <span className="workspace-name">
                   {workspace.workspace_title}
                 </span>
+
                 <span className="workspace-arrow">→</span>
               </Link>
             </div>
