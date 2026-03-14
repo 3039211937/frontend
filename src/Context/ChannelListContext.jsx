@@ -2,36 +2,45 @@ import { createContext, useEffect, useState } from "react";
 import { getWorkspaceChannels } from "../services/channelService";
 
 export const ChannelListContext = createContext({
-  ChannelList: [],
+  channelList: [],
   isChannelListLoading: false,
+  reloadChannels: () => {},
 });
 
-const ChannelListContextProvider = (props) => {
-  const [ChannelList, setChannelList] = useState([]);
+const ChannelListContextProvider = ({ children, workspace_id }) => {
+  const [channelList, setChannelList] = useState([]);
   const [isChannelListLoading, setIsChannelListLoading] = useState(false);
 
-  const loadChannelList = () => {
-    setIsChannelListLoading(true);
+  const loadChannelList = async () => {
+    try {
+      setIsChannelListLoading(true);
 
-    setTimeout(() => {
-      const Channel_list_response = getWorkspaceChannels();
-      setChannelList(Channel_list_response);
+      const response = await getWorkspaceChannels(workspace_id);
+
+      setChannelList(response.data.channels || []);
+    } catch (error) {
+      console.error("Error loading channels:", error);
+      setChannelList([]);
+    } finally {
       setIsChannelListLoading(false);
-    }, 500);
+    }
   };
 
   useEffect(() => {
-    loadChannelList();
-  }, []);
+    if (workspace_id) {
+      loadChannelList();
+    }
+  }, [workspace_id]);
 
   return (
     <ChannelListContext.Provider
       value={{
-        ChannelList: ChannelList,
-        isChannelListLoading: isChannelListLoading,
+        channelList,
+        isChannelListLoading,
+        reloadChannels: loadChannelList,
       }}
     >
-      {props.children}
+      {children}
     </ChannelListContext.Provider>
   );
 };

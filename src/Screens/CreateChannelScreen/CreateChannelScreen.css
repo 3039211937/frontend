@@ -1,0 +1,86 @@
+.create-channel-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 80px 20px;
+}
+
+.create-channel-card {
+  width: 100%;
+  max-width: 500px;
+
+  background: white;
+  padding: 32px;
+
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.create-channel-card h1 {
+  margin-bottom: 8px;
+}
+
+.create-channel-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.create-channel-card label {
+  display: block;
+  font-weight: 500;
+  margin-top: 16px;
+}
+
+.create-channel-card input,
+.create-channel-card textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+
+  border-radius: 6px;
+  border: 1px solid #ddd;
+
+  font-size: 14px;
+}
+
+.create-channel-card textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.create-channel-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.btn-cancel {
+  background: #eee;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-create {
+  background: #5865f2;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-create:hover {
+  background: #4752c4;
+}
+
+.create-channel-error {
+  margin-top: 12px;
+  color: red;
+  font-size: 13px;
+}

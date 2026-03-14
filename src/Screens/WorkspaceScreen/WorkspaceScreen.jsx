@@ -36,19 +36,27 @@ export default function WorkspaceScreen() {
     loadWorkspace();
   }, [workspace_id]);
 
-  if (loading) return <span>Loading...</span>;
-  if (error) return <span>{error}</span>;
-  if (!workspace) return <span>Workspace no encontrado</span>;
+  if (loading) {
+    return <span>Loading...</span>;
+  }
+
+  if (error) {
+    return <span>{error}</span>;
+  }
+
+  if (!workspace) {
+    return <span>Workspace no encontrado</span>;
+  }
 
   return (
-    <ChannelListContextProvider>
+    <ChannelListContextProvider workspace_id={workspace_id}>
       <div className="workspace-screen">
         <div className="workspace-main">
           <div className="workspace-sidebar">
             <SideBar />
           </div>
 
-          <div className="Channel-list">
+          <div className="channel-list">
             <ChannelListHeader title={workspace.title} />
             <ChannelList />
           </div>

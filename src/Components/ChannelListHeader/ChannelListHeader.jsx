@@ -21,7 +21,7 @@ export const ChannelListHeader = ({ title }) => {
         </div>
       </div>
 
-      <form className="header__form">
+      {/* <form className="header__form">
         <textarea
           id="mensaje"
           name="search"
@@ -32,7 +32,7 @@ export const ChannelListHeader = ({ title }) => {
         <button className="header__text-input-icon">
           <PiMagnifyingGlassLight />
         </button>
-      </form>
+      </form> */}
     </div>
   );
 };
