@@ -96,7 +96,7 @@ export async function logout() {
     method: "POST",
     headers: {
       "x-api-key": import.meta.env.VITE_API_KEY,
-      Authorization: "Bearer " + localStorage.getItem("auth_token"),
+      Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
     },
   });
 
@@ -117,7 +117,7 @@ export async function logout() {
   }
 
   /* Eliminamos el token del cliente */
-  localStorage.removeItem("auth_token");
+  sessionStorage.removeItem("auth_token");
 
   return response;
 }

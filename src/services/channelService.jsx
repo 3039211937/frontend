@@ -9,7 +9,7 @@ export async function getWorkspaceChannels(workspace_id) {
       method: "GET",
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
     },
   );
@@ -30,7 +30,7 @@ export async function getChannelMessages(workspace_id, channel_id) {
       method: "GET",
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
     },
   );
@@ -52,7 +52,7 @@ export async function sendChannelMessage(workspace_id, channel_id, mensaje) {
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
       body: JSON.stringify({ mensaje }),
     },
@@ -75,7 +75,7 @@ export async function createChannel(workspaceId, body) {
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
       body: JSON.stringify(body),
     },

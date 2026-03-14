@@ -121,3 +121,15 @@
   text-align: center;
   color: #666;
 }
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

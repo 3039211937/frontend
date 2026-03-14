@@ -152,7 +152,7 @@ const HomeScreen = () => {
       console.error("Logout API failed:", error);
     }
 
-    localStorage.removeItem("auth_token");
+    sessionStorage.removeItem("auth_token");
     navigate("/login", { replace: true });
   };
 

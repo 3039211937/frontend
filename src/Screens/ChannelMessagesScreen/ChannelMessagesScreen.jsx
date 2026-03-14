@@ -25,7 +25,9 @@ const ChannelMessagesScreen = () => {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h2># {currentChannel?.name || "Canal"}</h2>
+        <h2 className="chat-channel-title">
+          # {currentChannel?.name || "Canal"}
+        </h2>
 
         <span className="chat-count">{channelMessages.length} mensajes</span>
       </div>

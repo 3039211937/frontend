@@ -11,7 +11,7 @@ export async function getWorkspaceList() {
     method: "GET",
     headers: {
       "x-api-key": import.meta.env.VITE_API_KEY,
-      Authorization: "Bearer " + localStorage.getItem("auth_token"),
+      Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
     },
   });
 
@@ -34,7 +34,7 @@ export async function createWorkspace(workspace_data) {
     headers: {
       "x-api-key": import.meta.env.VITE_API_KEY,
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("auth_token"),
+      Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
     },
     body: JSON.stringify(workspace_data),
   });
@@ -59,7 +59,7 @@ export async function getWorkspaceById(workspace_id) {
       method: "GET",
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
     },
   );
@@ -84,7 +84,7 @@ export async function deleteWorkspace(workspace_id) {
       method: "DELETE",
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
     },
   );
@@ -110,7 +110,7 @@ export async function updateWorkspace(workspace_id, workspace_data) {
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
       body: JSON.stringify(workspace_data),
     },
@@ -137,7 +137,7 @@ export async function inviteWorkspaceMember(workspace_id, email, role) {
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
       body: JSON.stringify({
         email,
@@ -166,7 +166,7 @@ export async function getWorkspaceMembers(workspace_id) {
       method: "GET",
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
     },
   );
@@ -191,7 +191,7 @@ export async function removeWorkspaceMember(workspace_id, member_id) {
       method: "DELETE",
       headers: {
         "x-api-key": import.meta.env.VITE_API_KEY,
-        Authorization: "Bearer " + localStorage.getItem("auth_token"),
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
       },
     },
   );
