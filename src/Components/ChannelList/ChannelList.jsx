@@ -4,48 +4,41 @@ import { ChannelListContext } from "../../Context/ChannelListContext";
 import "./Channel-styles.css";
 
 const ChannelList = () => {
-  const { workspace_id } = useParams();
-
+  const { workspace_id, channel_id } = useParams();
   const { channelList, isChannelListLoading } = useContext(ChannelListContext);
 
   if (isChannelListLoading) {
     return <span>Cargando</span>;
   }
 
-  if (!channelList || channelList.length === 0) {
-    return (
-      <div className="channel-empty">
-        <span className="channel-empty-text">
-          No hay canales en este workspace
-        </span>
-
-        <Link
-          to={`/workspaces/${workspace_id}/create-channel`}
-          className="btn-create-channel"
-        >
-          Crear canal
-        </Link>
-      </div>
-    );
-  }
-
   return (
     <div>
-      {channelList.map((channel) => (
-        <ChannelItem
-          key={channel._id}
-          channel={channel}
-          workspace_id={workspace_id}
-        />
-      ))}
+      {!channelList || channelList.length === 0 ? (
+        <div className="channel-empty">
+          <span className="channel-empty-text">
+            No hay canales en este workspace
+          </span>
+        </div>
+      ) : (
+        channelList.map((channel) => (
+          <ChannelItem
+            key={channel._id}
+            channel={channel}
+            workspace_id={workspace_id}
+            current_channel_id={channel_id}
+          />
+        ))
+      )}
     </div>
   );
 };
 
-const ChannelItem = ({ channel, workspace_id }) => {
+const ChannelItem = ({ channel, workspace_id, current_channel_id }) => {
+  const isSelected = channel._id === current_channel_id;
+
   return (
     <Link to={`/workspaces/${workspace_id}/channels/${channel._id}`}>
-      <div className="channel-item">
+      <div className={`channel-item ${isSelected ? "channel-selected" : ""}`}>
         <div className="channel-item__icon">
           {channel.name.charAt(0).toUpperCase()}
         </div>

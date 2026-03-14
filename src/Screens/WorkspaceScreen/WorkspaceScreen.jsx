@@ -23,9 +23,8 @@ import "../HomeScreen/HomeScreen.css";
    LISTA DE CANALES
 ========================= */
 
-function ChannelListView() {
+function ChannelListView({ isChannelSelected }) {
   const { workspace_id } = useParams();
-
   const { channelList, isChannelListLoading } = useContext(ChannelListContext);
 
   if (isChannelListLoading) {
@@ -34,15 +33,21 @@ function ChannelListView() {
 
   return (
     <>
-      {/* BOTON CREAR CANAL */}
+      {/* BOTON SUPERIOR */}
 
       <div className="create-workspace-wrapper">
-        <Link
-          to={`/workspaces/${workspace_id}/create-channel`}
-          className="btn-create-small"
-        >
-          + Crear canal
-        </Link>
+        {isChannelSelected ? (
+          <Link to={`/workspaces/${workspace_id}`} className="btn-create-small">
+            ← Volver al workspace
+          </Link>
+        ) : (
+          <Link
+            to={`/workspaces/${workspace_id}/create-channel`}
+            className="btn-create-small"
+          >
+            Crear canal
+          </Link>
+        )}
       </div>
 
       {/* LISTA DE CANALES */}
@@ -94,10 +99,6 @@ export default function WorkspaceScreen() {
 
   const isChannelSelected = location.pathname.includes("/channels/");
 
-  /* =========================
-     CARGAR WORKSPACE
-  ========================= */
-
   useEffect(() => {
     async function loadWorkspace() {
       try {
@@ -117,10 +118,6 @@ export default function WorkspaceScreen() {
     loadWorkspace();
   }, [workspace_id]);
 
-  /* =========================
-     ELIMINAR MIEMBRO
-  ========================= */
-
   const handleRemoveMember = async (member_id, email) => {
     const confirm = await Swal.fire({
       title: "Eliminar miembro",
@@ -136,9 +133,7 @@ export default function WorkspaceScreen() {
 
     try {
       await removeWorkspaceMember(workspace_id, member_id);
-
       setMembers((prev) => prev.filter((m) => m.member_id !== member_id));
-
       Swal.fire("Miembro eliminado", "", "success");
     } catch (error) {
       console.error(error);
@@ -146,16 +141,10 @@ export default function WorkspaceScreen() {
     }
   };
 
-  /* =========================
-     INVITAR USUARIO
-  ========================= */
-
   const handleInvite = async () => {
     try {
       await inviteWorkspaceMember(workspace_id, inviteEmail, inviteRole);
-
       Swal.fire("Invitación enviada");
-
       setInviteEmail("");
       setInviteRole("Member");
       setShowInviteModal(false);
@@ -172,29 +161,19 @@ export default function WorkspaceScreen() {
     <ChannelListContextProvider workspace_id={workspace_id}>
       <div className="workspace-screen">
         <div className="workspace-main">
-          {/* SIDEBAR */}
-
           <div className="workspace-sidebar">
             <SideBar />
           </div>
 
-          {/* LISTA DE CANALES */}
-
           <div className="channel-list">
-            <ChannelListView />
+            <ChannelListView isChannelSelected={isChannelSelected} />
           </div>
-
-          {/* PANEL CENTRAL */}
 
           <div className="workspace-center">
             {isChannelSelected ? (
-              /* CHAT DEL CANAL */
-
               <Outlet />
             ) : (
               <>
-                {/* TARJETA DEL WORKSPACE */}
-
                 <div className="workspace-header">
                   <div
                     style={{
@@ -231,8 +210,6 @@ export default function WorkspaceScreen() {
                     </p>
                   )}
                 </div>
-
-                {/* LISTA DE MIEMBROS */}
 
                 <h3 style={{ marginTop: "20px" }}>Miembros</h3>
 
@@ -284,8 +261,6 @@ export default function WorkspaceScreen() {
           </div>
         </div>
       </div>
-
-      {/* MODAL INVITAR USUARIO */}
 
       {showInviteModal && (
         <div className="invite-modal-overlay">

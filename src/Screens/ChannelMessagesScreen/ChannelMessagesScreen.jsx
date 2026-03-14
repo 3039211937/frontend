@@ -9,14 +9,27 @@ import NewMessageForm from "../../Components/NewMessageForm/NewMessageForm";
 import "./ChannelMessagesScreen.css";
 
 const ChannelMessagesScreen = () => {
-  const { channelMessages, isChannelDetailLoading, onCreateNewMessage } =
-    useContext(ChannelDetailContext);
+  const {
+    channelMessages,
+    isChannelDetailLoading,
+    onCreateNewMessage,
+    reloadMessages,
+  } = useContext(ChannelDetailContext);
 
-  const { channelList } = useContext(ChannelListContext);
+  const { channelList, reloadChannels } = useContext(ChannelListContext);
 
   const { channel_id } = useParams();
 
   const currentChannel = channelList?.find((c) => c._id === channel_id);
+
+  /* =========================
+     REFRESH CHAT + CHANNEL LIST
+  ========================= */
+
+  const handleRefresh = async () => {
+    await reloadMessages();
+    await reloadChannels();
+  };
 
   if (isChannelDetailLoading) {
     return <div className="chat-loading">Cargando mensajes...</div>;
@@ -29,7 +42,13 @@ const ChannelMessagesScreen = () => {
           # {currentChannel?.name || "Canal"}
         </h2>
 
-        <span className="chat-count">{channelMessages.length} mensajes</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span className="chat-count">{channelMessages.length} mensajes</span>
+
+          <button className="btn btn-primary btn-sm" onClick={handleRefresh}>
+            ⟳
+          </button>
+        </div>
       </div>
 
       <div className="chat-messages">

@@ -8,7 +8,7 @@ export const ChannelListHeader = ({ title }) => {
   return (
     <div className="header">
       <div className="header__upper">
-        <h2 className="header__title">{title || "Blablapp"}</h2>
+        <h2 className="header__title">{title || "Canal"}</h2>
 
         <div className="header__side">
           <button className="header__icon">
@@ -20,19 +20,6 @@ export const ChannelListHeader = ({ title }) => {
           </button>
         </div>
       </div>
-
-      {/* <form className="header__form">
-        <textarea
-          id="mensaje"
-          name="search"
-          placeholder="Buscar un chat o iniciar uno nuevo"
-          className="header__text-input"
-        />
-
-        <button className="header__text-input-icon">
-          <PiMagnifyingGlassLight />
-        </button>
-      </form> */}
     </div>
   );
 };
