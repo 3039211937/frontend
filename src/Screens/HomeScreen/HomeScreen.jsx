@@ -3,7 +3,10 @@ import { WorkspaceContext } from "../../Context/WorkspaceContext";
 import { Link, useNavigate } from "react-router-dom";
 import { FiLogOut, FiEdit2, FiTrash2, FiArrowRight } from "react-icons/fi";
 import { logout } from "../../services/authService";
-import { deleteWorkspace } from "../../services/workspaceService";
+import {
+  deleteWorkspace,
+  updateWorkspace,
+} from "../../services/workspaceService";
 import Swal from "sweetalert2";
 import "./HomeScreen.css";
 
@@ -15,13 +18,71 @@ const HomeScreen = () => {
 
   const [workspaces, setWorkspaces] = useState([]);
 
-  /* cargar workspaces del contexto en estado local */
-
   useEffect(() => {
     if (workspace_list?.data?.workspaces) {
       setWorkspaces(workspace_list.data.workspaces);
     }
   }, [workspace_list]);
+
+  /* =========================
+     EDIT WORKSPACE
+  ========================= */
+
+  const handleEditWorkspace = async (workspace) => {
+    const { value: formValues } = await Swal.fire({
+      title: "Editar Workspace",
+      html: `
+        <input id="swal-title" class="swal2-input" placeholder="Título" value="${workspace.workspace_title}">
+        <input id="swal-image" class="swal2-input" placeholder="Imagen URL" value="${workspace.image || ""}">
+        <textarea id="swal-description" class="swal2-textarea" placeholder="Descripción">${workspace.description || ""}</textarea>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#0d6efd",
+      preConfirm: () => {
+        return {
+          title: document.getElementById("swal-title").value,
+          image: document.getElementById("swal-image").value,
+          description: document.getElementById("swal-description").value,
+        };
+      },
+    });
+
+    if (!formValues) return;
+
+    try {
+      await updateWorkspace(workspace.workspace_id, formValues);
+
+      setWorkspaces((prev) =>
+        prev.map((w) =>
+          w.workspace_id === workspace.workspace_id
+            ? {
+                ...w,
+                workspace_title: formValues.title,
+                description: formValues.description,
+                image: formValues.image,
+              }
+            : w,
+        ),
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Workspace actualizado",
+        confirmButtonColor: "#0d6efd",
+      });
+    } catch (error) {
+      console.error(error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.message,
+      });
+    }
+  };
 
   /* =========================
      DELETE WORKSPACE
@@ -47,13 +108,11 @@ const HomeScreen = () => {
     try {
       await deleteWorkspace(workspace_id);
 
-      /* eliminar workspace del estado local */
-
       setWorkspaces((prev) =>
         prev.filter((w) => w.workspace_id !== workspace_id),
       );
 
-      await Swal.fire({
+      Swal.fire({
         title: "Workspace eliminado",
         icon: "success",
         confirmButtonColor: "#0d6efd",
@@ -141,7 +200,7 @@ const HomeScreen = () => {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      navigate(`/workspaces/${workspace.workspace_id}/edit`);
+                      handleEditWorkspace(workspace);
                     }}
                   >
                     <FiEdit2 />
@@ -174,7 +233,7 @@ const HomeScreen = () => {
 
       <div className="home-actions">
         <Link to="/create-workspace" className="btn-create-small">
-          Crear nuevo workspace
+          + Crear nuevo workspace
         </Link>
 
         <button className="btn-logout" onClick={handleLogout}>
