@@ -7,17 +7,14 @@ import {
 } from "../services/channelService";
 
 /* =========================
-   CONTEXTO DE MENSAJES DEL CANAL
-   Maneja:
-   - carga de mensajes
-   - envío de mensajes
-   - estado global del canal
+   CONTEXTO DEL CANAL
 ========================= */
 
 export const ChannelDetailContext = createContext({
   isChannelDetailLoading: false,
   channelMessages: [],
   onCreateNewMessage: () => {},
+  reloadMessages: () => {},
 });
 
 const ChannelDetailContextProvider = () => {
@@ -27,18 +24,38 @@ const ChannelDetailContextProvider = () => {
   const { workspace_id, channel_id } = useParams();
 
   /* =========================
-     CARGAR MENSAJES DEL CANAL
+     NORMALIZAR MENSAJES
+  ========================= */
+
+  const normalizeMessages = (messages) => {
+    return messages.map((msg) => ({
+      id: msg._id,
+      content: msg.mensaje,
+      author:
+        msg?.fk_workspace_member_id?.fk_id_user?.username ||
+        msg?.fk_workspace_member_id?.fk_id_user?.email ||
+        "Usuario",
+      timestamp: new Date(msg.createdAt || Date.now()).toLocaleTimeString(),
+    }));
+  };
+
+  /* =========================
+     CARGAR MENSAJES
   ========================= */
 
   const loadMessages = async () => {
     try {
+      if (!workspace_id || !channel_id) return;
+
       setIsChannelDetailLoading(true);
 
       const response = await getChannelMessages(workspace_id, channel_id);
 
       const messages = response?.data?.messages || [];
 
-      setChannelMessages(messages);
+      const normalized = normalizeMessages(messages);
+
+      setChannelMessages(normalized);
     } catch (error) {
       console.error("Error cargando mensajes:", error);
       setChannelMessages([]);
@@ -48,17 +65,16 @@ const ChannelDetailContextProvider = () => {
   };
 
   /* =========================
-     RECARGAR MENSAJES AL CAMBIAR CANAL
+     RECARGAR AL ENTRAR AL CANAL
   ========================= */
 
   useEffect(() => {
-    if (workspace_id && channel_id) {
-      loadMessages();
-    }
+    setChannelMessages([]);
+    loadMessages();
   }, [workspace_id, channel_id]);
 
   /* =========================
-     ENVIAR MENSAJE NUEVO
+     CREAR MENSAJE
   ========================= */
 
   const onCreateNewMessage = async (message) => {
@@ -71,13 +87,13 @@ const ChannelDetailContextProvider = () => {
         message,
       );
 
-      const newMessage = response?.data?.message;
+      const backendMessage = response?.data?.message;
 
-      /* agregar el mensaje enviado al estado local */
-      if (newMessage) {
-        setChannelMessages((prev) => [...prev, newMessage]);
+      if (backendMessage) {
+        const normalized = normalizeMessages([backendMessage]);
+
+        setChannelMessages((prev) => [...prev, ...normalized]);
       } else {
-        /* fallback: recargar mensajes */
         loadMessages();
       }
     } catch (error) {
@@ -91,6 +107,7 @@ const ChannelDetailContextProvider = () => {
         isChannelDetailLoading,
         channelMessages,
         onCreateNewMessage,
+        reloadMessages: loadMessages,
       }}
     >
       <Outlet />
