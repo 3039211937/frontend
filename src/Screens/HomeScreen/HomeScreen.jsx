@@ -1,8 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { WorkspaceContext } from "../../Context/WorkspaceContext";
 import { Link, useNavigate } from "react-router-dom";
-import { FiLogOut } from "react-icons/fi";
+import { FiLogOut, FiEdit2, FiTrash2, FiArrowRight } from "react-icons/fi";
 import { logout } from "../../services/authService";
+import { deleteWorkspace } from "../../services/workspaceService";
+import Swal from "sweetalert2";
 import "./HomeScreen.css";
 
 const HomeScreen = () => {
@@ -11,18 +13,87 @@ const HomeScreen = () => {
   const { workspace_list_loading, workspace_list_error, workspace_list } =
     useContext(WorkspaceContext);
 
-  const handleLogout = async () => {
+  const [workspaces, setWorkspaces] = useState([]);
+
+  /* cargar workspaces del contexto en estado local */
+
+  useEffect(() => {
+    if (workspace_list?.data?.workspaces) {
+      setWorkspaces(workspace_list.data.workspaces);
+    }
+  }, [workspace_list]);
+
+  /* =========================
+     DELETE WORKSPACE
+  ========================= */
+
+  const handleDeleteWorkspace = async (workspace_id, workspace_title, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const result = await Swal.fire({
+      title: "Eliminar workspace",
+      text: `¿Seguro que deseas eliminar "${workspace_title}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e01e5a",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
-      // Call backend logout (optional but good practice)
+      await deleteWorkspace(workspace_id);
+
+      /* eliminar workspace del estado local */
+
+      setWorkspaces((prev) =>
+        prev.filter((w) => w.workspace_id !== workspace_id),
+      );
+
+      await Swal.fire({
+        title: "Workspace eliminado",
+        icon: "success",
+        confirmButtonColor: "#0d6efd",
+      });
+    } catch (error) {
+      console.error(error);
+
+      Swal.fire({
+        title: "Error",
+        text: error.message,
+        icon: "error",
+      });
+    }
+  };
+
+  /* =========================
+     LOGOUT
+  ========================= */
+
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Cerrar sesión",
+      text: "¿Seguro que deseas salir?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, salir",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#e01e5a",
+      cancelButtonColor: "#6c757d",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
       await logout();
     } catch (error) {
       console.error("Logout API failed:", error);
     }
 
-    // Always clear local session
     localStorage.removeItem("auth_token");
-
-    // Redirect to login
     navigate("/login", { replace: true });
   };
 
@@ -49,8 +120,8 @@ const HomeScreen = () => {
       )}
 
       <div className="workspace-list-card">
-        {workspace_list?.data?.workspaces?.length > 0 ? (
-          workspace_list.data.workspaces.map((workspace) => (
+        {workspaces.length > 0 ? (
+          workspaces.map((workspace) => (
             <div key={workspace.workspace_id} className="workspace-item">
               <Link
                 to={`/workspaces/${workspace.workspace_id}`}
@@ -64,7 +135,35 @@ const HomeScreen = () => {
                   {workspace.workspace_title}
                 </span>
 
-                <span className="workspace-arrow">→</span>
+                <div className="workspace-actions">
+                  <button
+                    className="icon-btn edit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate(`/workspaces/${workspace.workspace_id}/edit`);
+                    }}
+                  >
+                    <FiEdit2 />
+                  </button>
+
+                  <button
+                    className="icon-btn delete"
+                    onClick={(e) =>
+                      handleDeleteWorkspace(
+                        workspace.workspace_id,
+                        workspace.workspace_title,
+                        e,
+                      )
+                    }
+                  >
+                    <FiTrash2 />
+                  </button>
+                </div>
+
+                <span className="workspace-arrow">
+                  <FiArrowRight />
+                </span>
               </Link>
             </div>
           ))

@@ -8,6 +8,8 @@
   --white: #ffffff;
 }
 
+/* contenedor principal */
+
 .home-container {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   max-width: 650px;
@@ -16,6 +18,8 @@
   color: var(--slack-text-main);
 }
 
+/* título */
+
 .home-title {
   font-size: 32px;
   font-weight: 800;
@@ -23,12 +27,16 @@
   margin-bottom: 8px;
 }
 
+/* subtítulo */
+
 .home-subtitle {
   text-align: center;
   color: var(--slack-text-muted);
   margin-bottom: 32px;
   font-size: 16px;
 }
+
+/* tarjeta contenedora */
 
 .workspace-list-card {
   background: var(--white);
@@ -38,6 +46,8 @@
   overflow: hidden;
 }
 
+/* item workspace */
+
 .workspace-item {
   border-bottom: 1px solid var(--slack-border);
 }
@@ -46,18 +56,26 @@
   border-bottom: none;
 }
 
+/* fila clickable */
+
 .workspace-link {
   display: flex;
   align-items: center;
   padding: 16px 20px;
-  text-decoration: none;
+  text-decoration: none; /* evita subrayado */
   color: var(--slack-text-main);
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
+
+/* hover fila */
 
 .workspace-link:hover {
   background-color: #f9f9f9;
+  transform: translateY(-1px);
+  text-decoration: none; /* asegurar que no aparezca subrayado */
 }
+
+/* icono inicial */
 
 .workspace-icon {
   width: 36px;
@@ -65,12 +83,16 @@
   background-color: var(--slack-purple);
   color: white;
   border-radius: 6px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-weight: bold;
   margin-right: 12px;
 }
+
+/* nombre workspace */
 
 .workspace-name {
   flex-grow: 1;
@@ -78,49 +100,150 @@
   font-size: 16px;
 }
 
-.workspace-arrow {
-  color: var(--slack-text-muted);
-  font-size: 18px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
+/* contenedor editar eliminar */
 
-.workspace-link:hover .workspace-arrow {
-  opacity: 1;
-}
-
-.create-workspace-wrapper {
-  margin-top: 20px;
+.workspace-actions {
   display: flex;
-  justify-content: center;
+  gap: 8px;
+  margin-right: 10px;
 }
+
+/* estilo base botones pequeños */
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 6px;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  font-size: 16px;
+
+  transition: all 0.2s ease;
+}
+
+/* botón editar */
+
+.icon-btn.edit {
+  background-color: #2eb67d;
+  color: white;
+}
+
+.icon-btn.edit:hover {
+  background-color: white;
+  color: #2eb67d;
+  border: 2px solid #2eb67d;
+}
+
+/* botón eliminar */
+
+.icon-btn.delete {
+  background-color: #e01e5a;
+  color: white;
+}
+
+.icon-btn.delete:hover {
+  background-color: white;
+  color: #e01e5a;
+  border: 2px solid #e01e5a;
+}
+
+/* botón entrar workspace */
+
+.workspace-arrow {
+  width: 32px;
+  height: 32px;
+
+  background-color: #0d6efd;
+  color: white;
+
+  border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+
+  margin-left: 6px;
+}
+
+/* contenedor botones inferiores */
+
+.home-actions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* estilo base botones inferiores */
+
+.btn-create-small,
+.btn-logout {
+  height: 40px;
+  border-radius: 6px;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 600;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+/* botón crear workspace */
 
 .btn-create-small {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--slack-text-main);
-  text-decoration: none;
-  border: 1px solid var(--slack-border);
-  border-radius: 4px;
-  background: var(--white);
-  transition: all 0.2s;
+  padding: 0 18px;
+  background-color: #0d6efd;
+  color: white;
+  text-decoration: none; /* evita subrayado del link */
 }
+
+/* agregar símbolo + antes del texto */
 
 .btn-create-small::before {
   content: "+";
+  font-size: 18px;
   margin-right: 6px;
-  font-size: 16px;
-  color: var(--slack-blue);
+  font-weight: bold;
 }
 
 .btn-create-small:hover {
-  background-color: var(--slack-bg);
-  border-color: #bbb;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  color: #0d6efd;
+  border: 2px solid #0d6efd;
+  text-decoration: none;
 }
+
+/* botón salir */
+
+.btn-logout {
+  padding: 0 14px;
+  gap: 6px;
+
+  background-color: #e01e5a;
+  color: white;
+}
+
+.btn-logout:hover {
+  background-color: white;
+  color: #e01e5a;
+  border: 2px solid #e01e5a;
+}
+
+/* estados carga */
 
 .loading-container,
 .error-container {
@@ -131,48 +254,4 @@
 .loading-text {
   color: var(--slack-purple);
   font-weight: 600;
-}
-
-/* container for both actions */
-
-.home-actions {
-  margin-top: 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* make create workspace button larger */
-
-.home-actions .btn-create-small {
-  padding: 12px 20px;
-  font-size: 15px;
-  border-radius: 6px;
-}
-
-/* logout button */
-
-.btn-logout {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 12px 20px;
-  font-size: 15px;
-  font-weight: 700;
-
-  border: 1px solid var(--slack-border);
-  border-radius: 6px;
-
-  background: var(--white);
-  color: var(--slack-text-main);
-
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-logout:hover {
-  background-color: var(--slack-bg);
-  border-color: #bbb;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
