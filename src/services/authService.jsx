@@ -1,24 +1,31 @@
-/* 
+/*
 En estos archivos buscamos centralizar la configuracion y llamada a servicios externos de nuestro frontend
-Un ejemplo de esto puede ser:
-- API INTERNA
-- API EXTERNA
-- Libreria que necesite una configuracion
+
+Ejemplos:
+- API interna
+- API externa
+- Librerías que requieran configuración
 */
 
 import { ServerError } from "../utils/errorUtils";
 
-/* 
-fetch es una funcion que nos permite hacer peticiones HTTP a un servidor
-Se lo usa entre otras cosas para comunicarnos con API (Servidores HTTP)
-En criollo es la forma de interactuar con el backend y lo podriamos comparar con hacer una solicitud http desde postman
+/*
+fetch permite hacer peticiones HTTP a un servidor.
 
-fetch recibe 2 parametros
-- URL de consulta
-- Un objeto de configuracion
+Se usa principalmente para comunicarse con el backend.
+
+fetch recibe:
+1) URL
+2) objeto de configuración
 */
 
-const URL_API = import.meta.env.VITE_API_URL; /* 'http://localhost:8080' */
+const URL_API = import.meta.env.VITE_API_URL;
+
+/*
+=========================
+LOGIN
+=========================
+*/
 
 export async function login(email, password) {
   const response_http = await fetch(URL_API + "/api/auth/login", {
@@ -41,6 +48,12 @@ export async function login(email, password) {
 
   return response;
 }
+
+/*
+=========================
+REGISTER
+=========================
+*/
 
 export async function register(username, password, email) {
   const response_http = await fetch(URL_API + "/api/auth/register", {
@@ -65,9 +78,17 @@ export async function register(username, password, email) {
   return response;
 }
 
-/* 
-Logout
-El backend invalida la sesion (si aplica) y el frontend elimina el token
+/*
+=========================
+LOGOUT
+=========================
+
+El backend invalida la sesión (si aplica)
+El frontend elimina el token.
+
+También manejamos el caso donde el servidor
+devuelve HTML en lugar de JSON para evitar
+el error "Unexpected token <"
 */
 
 export async function logout() {
@@ -79,10 +100,20 @@ export async function logout() {
     },
   });
 
-  const response = await response_http.json();
+  const contentType = response_http.headers.get("content-type");
 
-  if (!response.ok) {
-    throw new ServerError(response.message, response.status);
+  let response = null;
+
+  /* Solo parseamos JSON si el servidor devolvió JSON */
+  if (contentType && contentType.includes("application/json")) {
+    response = await response_http.json();
+  }
+
+  if (!response_http.ok) {
+    throw new ServerError(
+      response?.message || "Error cerrando sesión",
+      response?.status || response_http.status,
+    );
   }
 
   /* Eliminamos el token del cliente */
@@ -91,12 +122,13 @@ export async function logout() {
   return response;
 }
 
-/* 
-response body example:
+/*
+Ejemplo de respuesta esperada del backend:
+
 {
-    "message": "Usuario creado exitosamente",
-    "status": 201,
-    "ok": true,
-    "data": null
+  "message": "Usuario creado exitosamente",
+  "status": 201,
+  "ok": true,
+  "data": null
 }
 */

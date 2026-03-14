@@ -33,33 +33,50 @@ function ChannelListView() {
   }
 
   return (
-    <div className="workspace-list-card">
-      {channelList?.length > 0 ? (
-        channelList.map((channel) => (
-          <div key={channel._id} className="workspace-item">
-            <Link
-              to={`/workspaces/${workspace_id}/channels/${channel._id}`}
-              className="workspace-link"
-            >
-              <div className="workspace-icon">
-                {channel.name.charAt(0).toUpperCase()}
-              </div>
+    <>
+      {/* BOTON CREAR CANAL */}
 
-              <span className="workspace-name">{channel.name}</span>
+      <div className="create-workspace-wrapper">
+        <Link
+          to={`/workspaces/${workspace_id}/create-channel`}
+          className="btn-create-small"
+        >
+          + Crear canal
+        </Link>
+      </div>
 
-              <span className="workspace-arrow">→</span>
-            </Link>
-          </div>
-        ))
-      ) : (
-        <span className="empty-message">No hay canales en este workspace</span>
-      )}
-    </div>
+      {/* LISTA DE CANALES */}
+
+      <div className="workspace-list-card">
+        {channelList?.length > 0 ? (
+          channelList.map((channel) => (
+            <div key={channel._id} className="workspace-item">
+              <Link
+                to={`/workspaces/${workspace_id}/channels/${channel._id}`}
+                className="workspace-link"
+              >
+                <div className="workspace-icon">
+                  {channel.name.charAt(0).toUpperCase()}
+                </div>
+
+                <span className="workspace-name">{channel.name}</span>
+
+                <span className="workspace-arrow">→</span>
+              </Link>
+            </div>
+          ))
+        ) : (
+          <span className="empty-message">
+            No hay canales en este workspace
+          </span>
+        )}
+      </div>
+    </>
   );
 }
 
 /* =========================
-   PANTALLA PRINCIPAL
+   PANTALLA PRINCIPAL WORKSPACE
 ========================= */
 
 export default function WorkspaceScreen() {
@@ -170,13 +187,13 @@ export default function WorkspaceScreen() {
           {/* PANEL CENTRAL */}
 
           <div className="workspace-center">
-            {/* SI HAY CANAL SELECCIONADO → CHAT */}
-
             {isChannelSelected ? (
+              /* CHAT DEL CANAL */
+
               <Outlet />
             ) : (
               <>
-                {/* HEADER WORKSPACE */}
+                {/* TARJETA DEL WORKSPACE */}
 
                 <div className="workspace-header">
                   <div
@@ -192,7 +209,7 @@ export default function WorkspaceScreen() {
                       className="btn-create-small"
                       onClick={() => setShowInviteModal(true)}
                     >
-                      Invitar usuario
+                      + Invitar usuario
                     </button>
                   </div>
 
