@@ -10,6 +10,7 @@ import CreateWorkspaceScreen from "./Screens/CreateWorkspaceScreen/CreateWorkspa
 import WorkspaceList from "./Screens/WorkspaceListScreen/WorkspaceListScreen";
 import Workspace from "./Screens/WorkspaceScreen/WorkspaceScreen";
 import CreateChannelScreen from "./Screens/CreateChannelScreen/CreateChannelScreen";
+import AcceptInvitationScreen from "./Screens/AcceptInvitationScreen/AcceptInvitationScreen";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           path="/workspaces/:workspaceId/create-channel"
           element={<CreateChannelScreen />}
         />
+        <Route path="/accept-invitation" element={<AcceptInvitationScreen />} />
       </Routes>
     </AuthContextProvider>
   );
