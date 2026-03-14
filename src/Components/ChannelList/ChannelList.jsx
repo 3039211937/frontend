@@ -32,17 +32,24 @@ const ChannelList = () => {
   return (
     <div>
       {channelList.map((channel) => (
-        <ChannelItem channel={channel} key={channel.id} />
+        <ChannelItem
+          key={channel._id}
+          channel={channel}
+          workspace_id={workspace_id}
+        />
       ))}
     </div>
   );
 };
 
-const ChannelItem = ({ channel }) => {
+const ChannelItem = ({ channel, workspace_id }) => {
   return (
-    <Link to={`/channels/${channel.id}`}>
+    <Link to={`/workspaces/${workspace_id}/channels/${channel._id}`}>
       <div className="channel-item">
-        <img src={channel.profile_img} className="channel-item__img" alt="" />
+        <div className="channel-item__icon">
+          {channel.name.charAt(0).toUpperCase()}
+        </div>
+
         <h2 className="channel-item__name">{channel.name}</h2>
       </div>
     </Link>

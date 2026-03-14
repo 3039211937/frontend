@@ -1,50 +1,96 @@
 import { createContext, useEffect, useState } from "react";
-import { Outlet, useParams } from "react-router";
-import { getChannelById } from "../services/channelService";
+import { Outlet, useParams } from "react-router-dom";
+
+import {
+  getChannelMessages,
+  sendChannelMessage,
+} from "../services/channelService";
+
+/* =========================
+   CONTEXTO DE MENSAJES DEL CANAL
+   Maneja:
+   - carga de mensajes
+   - envío de mensajes
+   - estado global del canal
+========================= */
 
 export const ChannelDetailContext = createContext({
   isChannelDetailLoading: false,
-  ChannelDetailed: null,
-  onCreateNewMessage: (new_message) => {},
+  channelMessages: [],
+  onCreateNewMessage: () => {},
 });
 
-const ChannelDetailContextProvider = (props) => {
+const ChannelDetailContextProvider = () => {
   const [isChannelDetailLoading, setIsChannelDetailLoading] = useState(false);
-  const [ChannelDetailed, setChannelDetailed] = useState(null);
+  const [channelMessages, setChannelMessages] = useState([]);
 
-  const { id_Channelo } = useParams();
+  const { workspace_id, channel_id } = useParams();
 
-  function loadChannelById(Channel_id) {
-    setIsChannelDetailLoading(true);
-    setTimeout(() => {
-      const Channel = getChannelById(Channel_id);
-      setChannelDetailed(Channel);
+  /* =========================
+     CARGAR MENSAJES DEL CANAL
+  ========================= */
+
+  const loadMessages = async () => {
+    try {
+      setIsChannelDetailLoading(true);
+
+      const response = await getChannelMessages(workspace_id, channel_id);
+
+      const messages = response?.data?.messages || [];
+
+      setChannelMessages(messages);
+    } catch (error) {
+      console.error("Error cargando mensajes:", error);
+      setChannelMessages([]);
+    } finally {
       setIsChannelDetailLoading(false);
-    }, 500);
-  }
+    }
+  };
+
+  /* =========================
+     RECARGAR MENSAJES AL CAMBIAR CANAL
+  ========================= */
 
   useEffect(() => {
-    loadChannelById(id_Channelo);
-  }, [id_Channelo]);
+    if (workspace_id && channel_id) {
+      loadMessages();
+    }
+  }, [workspace_id, channel_id]);
 
-  const onCreateNewMessage = (new_message) => {
-    const new_message_object = {
-      content: new_message,
-      author: "YO",
-      timestamp: "19:00",
-      id: ChannelDetailed.messages.length + 1,
-    };
-    const messages_cloned = [...ChannelDetailed.messages];
-    messages_cloned.push(new_message_object);
-    setChannelDetailed({ ...ChannelDetailed, messages: messages_cloned });
+  /* =========================
+     ENVIAR MENSAJE NUEVO
+  ========================= */
+
+  const onCreateNewMessage = async (message) => {
+    if (!message || message.trim() === "") return;
+
+    try {
+      const response = await sendChannelMessage(
+        workspace_id,
+        channel_id,
+        message,
+      );
+
+      const newMessage = response?.data?.message;
+
+      /* agregar el mensaje enviado al estado local */
+      if (newMessage) {
+        setChannelMessages((prev) => [...prev, newMessage]);
+      } else {
+        /* fallback: recargar mensajes */
+        loadMessages();
+      }
+    } catch (error) {
+      console.error("Error enviando mensaje:", error);
+    }
   };
 
   return (
     <ChannelDetailContext.Provider
       value={{
-        isChannelDetailLoading: isChannelDetailLoading,
-        ChannelDetailed: ChannelDetailed,
-        onCreateNewMessage: onCreateNewMessage,
+        isChannelDetailLoading,
+        channelMessages,
+        onCreateNewMessage,
       }}
     >
       <Outlet />

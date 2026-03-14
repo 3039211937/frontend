@@ -1,16 +1,28 @@
 import React, { useContext } from "react";
-import { ChannelListContext } from "../../Context/ChannelListContext";
+import { ChannelDetailContext } from "../../Context/ChannelDetailContext";
 import "./MessageFormStyles.css";
-import { IoAddSharp } from "react-icons/io5";
 
-const NewMessageForm = (props) => {
-  console.log(useContext(ChannelListContext));
+/* =========================
+   FORMULARIO PARA ENVIAR MENSAJES
+========================= */
+
+const NewMessageForm = () => {
+  const { onCreateNewMessage } = useContext(ChannelDetailContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.target;
-    const message_value = form.mensaje.value;
 
-    props.onCreateNewMessage(message_value);
+    const form = event.target;
+    const message_value = form.mensaje.value.trim();
+
+    /* evitar enviar mensajes vacíos */
+    if (!message_value) return;
+
+    /* enviar mensaje al backend */
+    onCreateNewMessage(message_value);
+
+    /* limpiar textarea */
+    form.reset();
   };
 
   return (
@@ -18,14 +30,16 @@ const NewMessageForm = (props) => {
       <textarea
         id="mensaje"
         name="mensaje"
-        placeholder="Escribe tu mensaje aquí"
+        placeholder="Escribe tu mensaje aquí..."
         className="message-form-text-input"
       />
-      <button>
+
+      <button type="submit">
         <img
-          src="https://cdn-icons-png.freepik.com/256/10924/10924424.png?semt=ais_white_label"
+          src="https://cdn-icons-png.freepik.com/256/10924/10924424.png"
           className="message-form__img"
-        ></img>
+          alt="Enviar"
+        />
       </button>
     </form>
   );

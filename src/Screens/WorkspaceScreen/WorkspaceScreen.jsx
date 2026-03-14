@@ -45,9 +45,9 @@ function ChannelListView() {
       <div className="workspace-list-card">
         {channelList?.length > 0 ? (
           channelList.map((channel) => (
-            <div key={channel.channel_id} className="workspace-item">
+            <div key={channel._id} className="workspace-item">
               <Link
-                to={`/channels/${channel.channel_id}`}
+                to={`/workspaces/${workspace_id}/channels/${channel._id}`}
                 className="workspace-link"
               >
                 <div className="workspace-icon">
