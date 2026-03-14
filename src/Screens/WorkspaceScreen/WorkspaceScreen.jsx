@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import { getWorkspaceById } from "../../services/workspaceService";
-import ContactListContextProvider from "../../Context/ContactListContext";
+import ChannelListContextProvider from "../../Context/ChannelListContext";
 
-import ContactList from "../../Components/ContactList/ContactList";
-import ContactListHeader from "../../Components/ContactListHeader/ContactListHeader";
+import ChannelList from "../../Components/ChannelList/ChannelList";
+import ChannelListHeader from "../../Components/ChannelListHeader/ChannelListHeader";
 import SideBar from "../../Components/SideBar/SideBar";
 
 import "./WorkspaceScreen.css";
@@ -41,16 +41,16 @@ export default function WorkspaceScreen() {
   if (!workspace) return <span>Workspace no encontrado</span>;
 
   return (
-    <ContactListContextProvider>
+    <ChannelListContextProvider>
       <div className="workspace-screen">
         <div className="workspace-main">
           <div className="workspace-sidebar">
             <SideBar />
           </div>
 
-          <div className="contact-list">
-            <ContactListHeader title={workspace.title} />
-            <ContactList />
+          <div className="Channel-list">
+            <ChannelListHeader title={workspace.title} />
+            <ChannelList />
           </div>
 
           <div className="no-messages-container">
@@ -78,6 +78,6 @@ export default function WorkspaceScreen() {
           </div>
         </div>
       </div>
-    </ContactListContextProvider>
+    </ChannelListContextProvider>
   );
 }
