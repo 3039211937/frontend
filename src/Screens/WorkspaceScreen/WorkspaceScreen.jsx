@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Outlet, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FiTrash2 } from "react-icons/fi";
 
@@ -19,59 +19,52 @@ import SideBar from "../../Components/SideBar/SideBar";
 import "./WorkspaceScreen.css";
 import "../HomeScreen/HomeScreen.css";
 
+/* =========================
+   LISTA DE CANALES
+========================= */
+
 function ChannelListView() {
   const { workspace_id } = useParams();
+
   const { channelList, isChannelListLoading } = useContext(ChannelListContext);
 
   if (isChannelListLoading) {
-    return (
-      <div className="loading-container">
-        <span className="loading-text">Cargando canales...</span>
-      </div>
-    );
+    return <span>Cargando canales...</span>;
   }
 
   return (
-    <>
-      <div className="create-workspace-wrapper">
-        <Link
-          to={`/workspaces/${workspace_id}/create-channel`}
-          className="btn-create-small"
-        >
-          Crear canal
-        </Link>
-      </div>
+    <div className="workspace-list-card">
+      {channelList?.length > 0 ? (
+        channelList.map((channel) => (
+          <div key={channel._id} className="workspace-item">
+            <Link
+              to={`/workspaces/${workspace_id}/channels/${channel._id}`}
+              className="workspace-link"
+            >
+              <div className="workspace-icon">
+                {channel.name.charAt(0).toUpperCase()}
+              </div>
 
-      <div className="workspace-list-card">
-        {channelList?.length > 0 ? (
-          channelList.map((channel) => (
-            <div key={channel._id} className="workspace-item">
-              <Link
-                to={`/workspaces/${workspace_id}/channels/${channel._id}`}
-                className="workspace-link"
-              >
-                <div className="workspace-icon">
-                  {channel.name.charAt(0).toUpperCase()}
-                </div>
+              <span className="workspace-name">{channel.name}</span>
 
-                <span className="workspace-name">{channel.name}</span>
-
-                <span className="workspace-arrow">→</span>
-              </Link>
-            </div>
-          ))
-        ) : (
-          <span className="empty-message">
-            No hay canales en este workspace
-          </span>
-        )}
-      </div>
-    </>
+              <span className="workspace-arrow">→</span>
+            </Link>
+          </div>
+        ))
+      ) : (
+        <span className="empty-message">No hay canales en este workspace</span>
+      )}
+    </div>
   );
 }
 
+/* =========================
+   PANTALLA PRINCIPAL
+========================= */
+
 export default function WorkspaceScreen() {
   const { workspace_id } = useParams();
+  const location = useLocation();
 
   const [workspace, setWorkspace] = useState(null);
   const [members, setMembers] = useState([]);
@@ -81,6 +74,12 @@ export default function WorkspaceScreen() {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("Member");
+
+  const isChannelSelected = location.pathname.includes("/channels/");
+
+  /* =========================
+     CARGAR WORKSPACE
+  ========================= */
 
   useEffect(() => {
     async function loadWorkspace() {
@@ -102,7 +101,7 @@ export default function WorkspaceScreen() {
   }, [workspace_id]);
 
   /* =========================
-     REMOVE MEMBER
+     ELIMINAR MIEMBRO
   ========================= */
 
   const handleRemoveMember = async (member_id, email) => {
@@ -131,7 +130,7 @@ export default function WorkspaceScreen() {
   };
 
   /* =========================
-     INVITE MEMBER
+     INVITAR USUARIO
   ========================= */
 
   const handleInvite = async () => {
@@ -156,64 +155,94 @@ export default function WorkspaceScreen() {
     <ChannelListContextProvider workspace_id={workspace_id}>
       <div className="workspace-screen">
         <div className="workspace-main">
+          {/* SIDEBAR */}
+
           <div className="workspace-sidebar">
             <SideBar />
           </div>
+
+          {/* LISTA DE CANALES */}
 
           <div className="channel-list">
             <ChannelListView />
           </div>
 
-          <div className="no-messages-container">
-            <div className="workspace-header">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <h1>{workspace.title}</h1>
+          {/* PANEL CENTRAL */}
 
-                <button
-                  className="btn-create-small"
-                  onClick={() => setShowInviteModal(true)}
-                >
-                  Invitar usuario
-                </button>
-              </div>
+          <div className="workspace-center">
+            {/* SI HAY CANAL SELECCIONADO → CHAT */}
 
-              {/* =========================
-                 MEMBERS LIST
-              ========================= */}
+            {isChannelSelected ? (
+              <Outlet />
+            ) : (
+              <>
+                {/* HEADER WORKSPACE */}
 
-              <h3 style={{ marginTop: "20px" }}>Miembros</h3>
+                <div className="workspace-header">
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <h1>{workspace.title}</h1>
 
-              <div className="workspace-list-card">
-                {members.length > 0 ? (
-                  members.map((member) => (
-                    <div key={member.member_id} className="workspace-item">
-                      <div className="workspace-link">
-                        <div className="workspace-icon">
-                          {member.email.charAt(0).toUpperCase()}
-                        </div>
-                        <span className="workspace-name">{member.email}</span>
-                        {/* ROLE BADGE */}
-                        <span
-                          style={{
-                            marginRight: "12px",
-                            fontSize: "13px",
-                            color: "#666",
-                          }}
-                        >
-                          {member.role}
-                        </span>
-                        {/* DELETE BUTTON */}
-                        <div className="workspace-actions">
+                    <button
+                      className="btn-create-small"
+                      onClick={() => setShowInviteModal(true)}
+                    >
+                      Invitar usuario
+                    </button>
+                  </div>
+
+                  {workspace.description && <p>{workspace.description}</p>}
+
+                  <p>
+                    <strong>Creado:</strong>{" "}
+                    {new Date(workspace.created_at).toLocaleDateString()}
+                  </p>
+
+                  <p>
+                    <strong>Estado:</strong>{" "}
+                    {workspace.active ? "Activo" : "Inactivo"}
+                  </p>
+
+                  {member && (
+                    <p>
+                      <strong>Tu rol:</strong> {member.role}
+                    </p>
+                  )}
+                </div>
+
+                {/* LISTA DE MIEMBROS */}
+
+                <h3 style={{ marginTop: "20px" }}>Miembros</h3>
+
+                <div className="workspace-list-card">
+                  {members.length > 0 ? (
+                    members.map((member) => (
+                      <div key={member.member_id} className="workspace-item">
+                        <div className="workspace-link">
+                          <div className="workspace-icon">
+                            {member.email.charAt(0).toUpperCase()}
+                          </div>
+
+                          <span className="workspace-name">{member.email}</span>
+
+                          <span
+                            style={{
+                              marginRight: "12px",
+                              fontSize: "13px",
+                              color: "#666",
+                            }}
+                          >
+                            {member.role}
+                          </span>
+
                           {member.role !== "Owner" && (
                             <button
                               className="icon-btn delete"
-                              title="Eliminar miembro"
                               onClick={() =>
                                 handleRemoveMember(
                                   member.member_id,
@@ -224,24 +253,22 @@ export default function WorkspaceScreen() {
                               <FiTrash2 />
                             </button>
                           )}
-                        </div>{" "}
+                        </div>
                       </div>
-                    </div>
-                  ))
-                ) : (
-                  <span className="empty-message">
-                    No hay miembros en este workspace
-                  </span>
-                )}
-              </div>
-            </div>
+                    ))
+                  ) : (
+                    <span className="empty-message">
+                      No hay miembros en este workspace
+                    </span>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
 
-      {/* =========================
-         INVITE MODAL
-      ========================= */}
+      {/* MODAL INVITAR USUARIO */}
 
       {showInviteModal && (
         <div className="invite-modal-overlay">

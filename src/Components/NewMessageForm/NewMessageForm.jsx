@@ -1,46 +1,42 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { ChannelDetailContext } from "../../Context/ChannelDetailContext";
 import "./MessageFormStyles.css";
 
-/* =========================
-   FORMULARIO PARA ENVIAR MENSAJES
-========================= */
-
 const NewMessageForm = () => {
   const { onCreateNewMessage } = useContext(ChannelDetailContext);
+  const textareaRef = useRef();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const form = event.target;
-    const message_value = form.mensaje.value.trim();
+    const message = textareaRef.current.value.trim();
 
-    /* evitar enviar mensajes vacíos */
-    if (!message_value) return;
+    if (!message) return;
 
-    /* enviar mensaje al backend */
-    onCreateNewMessage(message_value);
+    onCreateNewMessage(message);
 
-    /* limpiar textarea */
-    form.reset();
+    textareaRef.current.value = "";
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="message-form">
       <textarea
-        id="mensaje"
+        ref={textareaRef}
         name="mensaje"
-        placeholder="Escribe tu mensaje aquí..."
+        rows="3"
+        placeholder="Escribe tu mensaje..."
         className="message-form-text-input"
+        onKeyDown={handleKeyDown}
       />
 
-      <button type="submit">
-        <img
-          src="https://cdn-icons-png.freepik.com/256/10924/10924424.png"
-          className="message-form__img"
-          alt="Enviar"
-        />
-      </button>
+      <button type="submit">➤</button>
     </form>
   );
 };

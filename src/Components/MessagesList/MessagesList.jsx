@@ -1,29 +1,33 @@
 import React from "react";
-import Message from "../Message/Message";
 import "./messagesList.css";
 
 const MessagesList = ({ messages }) => {
   if (!messages || messages.length === 0) {
-    return (
-      <div className="messages-list">
-        <span>No hay mensajes en este canal</span>
-      </div>
-    );
+    return <div>No hay mensajes en este canal</div>;
   }
 
-  const messages_list_JSX = messages.map((message) => {
-    return (
-      <Message
-        key={message._id || message.id}
-        author={message.user?.username || message.author || "Usuario"}
-        timestamp={message.created_at || message.timestamp || ""}
-        content={message.mensaje || message.content || ""}
-        id={message._id || message.id}
-      />
-    );
-  });
+  return (
+    <div className="messages-list">
+      {messages.map((message) => {
+        const author = message.author || message.user?.username || "Usuario";
 
-  return <div className="messages-list">{messages_list_JSX}</div>;
+        const content = message.content || message.mensaje || "";
+
+        const timestamp = message.timestamp || message.created_at || "";
+
+        return (
+          <div key={message._id || message.id} className="message">
+            <div className="message-author">
+              {author}
+              <span className="message-time">{timestamp}</span>
+            </div>
+
+            <div className="message-content">{content}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default MessagesList;

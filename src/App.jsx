@@ -1,41 +1,72 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
+/* =========================
+   PANTALLAS PUBLICAS
+========================= */
+
 import LoginScreen from "./Screens/LoginScreen/LoginScreen";
 import RegisterScreen from "./Screens/RegisterScreen/RegisterScreen";
+import AcceptInvitationScreen from "./Screens/AcceptInvitationScreen/AcceptInvitationScreen";
+
+/* =========================
+   CONTEXTOS Y MIDDLEWARE
+========================= */
 
 import AuthContextProvider from "./Context/AuthContext";
 import AuthMiddleware from "./Middlewares/AuthMiddleware";
-
 import WorkspaceContextProvider from "./Context/WorkspaceContext";
 
+/* =========================
+   PANTALLAS PRINCIPALES
+========================= */
+
 import HomeScreen from "./Screens/HomeScreen/HomeScreen";
-import CreateWorkspaceScreen from "./Screens/CreateWorkspaceScreen/CreateWorkspaceScreen";
 import WorkspaceList from "./Screens/WorkspaceListScreen/WorkspaceListScreen";
 import Workspace from "./Screens/WorkspaceScreen/WorkspaceScreen";
+import CreateWorkspaceScreen from "./Screens/CreateWorkspaceScreen/CreateWorkspaceScreen";
 import CreateChannelScreen from "./Screens/CreateChannelScreen/CreateChannelScreen";
-import AcceptInvitationScreen from "./Screens/AcceptInvitationScreen/AcceptInvitationScreen";
+
+/* =========================
+   CHAT DEL CANAL
+========================= */
 
 import ChannelDetailContextProvider from "./Context/ChannelDetailContext";
 import ChannelMessagesScreen from "./Screens/ChannelMessagesScreen/ChannelMessagesScreen";
+
+/* =========================
+   PANTALLA CENTRAL DEL WORKSPACE
+   (cuando no hay canal seleccionado)
+========================= */
+
+import WorkspaceCenterScreen from "./Screens/WorkspaceCenterScreen/WorkspaceCenterScreen";
 
 function App() {
   return (
     <AuthContextProvider>
       <Routes>
-        {/* PUBLIC ROUTES */}
+        {/* =========================
+            RUTAS PUBLICAS
+           ========================= */}
 
         <Route path="/" element={<LoginScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
 
-        {/* ACCEPT INVITATION */}
+        {/* =========================
+            ACEPTAR INVITACION
+           ========================= */}
 
         <Route path="/accept-invitation" element={<AcceptInvitationScreen />} />
 
-        {/* PRIVATE ROUTES */}
+        {/* =========================
+            RUTAS PRIVADAS
+            (requieren autenticación)
+           ========================= */}
 
         <Route element={<AuthMiddleware />}>
+          {/* HOME */}
+
           <Route
             path="/home"
             element={
@@ -45,28 +76,38 @@ function App() {
             }
           />
 
+          {/* CREAR WORKSPACE */}
+
           <Route path="/create-workspace" element={<CreateWorkspaceScreen />} />
+
+          {/* LISTA DE WORKSPACES */}
 
           <Route path="/workspaces" element={<WorkspaceList />} />
 
-          {/* WORKSPACE */}
+          {/* =========================
+              WORKSPACE
+             ========================= */}
 
-          <Route path="/workspaces/:workspace_id" element={<Workspace />} />
+          <Route path="/workspaces/:workspace_id" element={<Workspace />}>
+            {/* PANTALLA POR DEFECTO
+               (info del workspace y miembros) */}
 
-          {/* CREATE CHANNEL */}
+            <Route index element={<WorkspaceCenterScreen />} />
 
-          <Route
-            path="/workspaces/:workspace_id/create-channel"
-            element={<CreateChannelScreen />}
-          />
+            {/* CREAR CANAL */}
 
-          {/* CHANNEL MESSAGES */}
+            <Route path="create-channel" element={<CreateChannelScreen />} />
 
-          <Route
-            path="/workspaces/:workspace_id/channels/:channel_id"
-            element={<ChannelDetailContextProvider />}
-          >
-            <Route index element={<ChannelMessagesScreen />} />
+            {/* =========================
+                CHAT DEL CANAL
+               ========================= */}
+
+            <Route
+              path="channels/:channel_id"
+              element={<ChannelDetailContextProvider />}
+            >
+              <Route index element={<ChannelMessagesScreen />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
