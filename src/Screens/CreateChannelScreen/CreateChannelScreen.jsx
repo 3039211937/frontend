@@ -6,7 +6,9 @@ import { createChannel } from "../../services/channelService";
 import "./CreateChannelScreen.css";
 
 export default function CreateChannelScreen() {
-  const { workspaceId } = useParams();
+  /* FIXED PARAM NAME */
+  const { workspace_id } = useParams();
+
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -26,12 +28,12 @@ export default function CreateChannelScreen() {
       setLoading(true);
       setError(null);
 
-      await createChannel(workspaceId, {
+      await createChannel(workspace_id, {
         name,
         description,
       });
 
-      navigate(`/workspaces/${workspaceId}`);
+      navigate(`/workspaces/${workspace_id}`);
     } catch (err) {
       console.error(err);
       setError(err.message || "Error creando el canal");
@@ -51,6 +53,7 @@ export default function CreateChannelScreen() {
 
         <form onSubmit={handleSubmit}>
           <label>Nombre del canal</label>
+
           <input
             type="text"
             placeholder="ej: general"
@@ -59,6 +62,7 @@ export default function CreateChannelScreen() {
           />
 
           <label>Descripción (opcional)</label>
+
           <textarea
             placeholder="Describe el propósito del canal"
             value={description}
@@ -71,7 +75,7 @@ export default function CreateChannelScreen() {
             <button
               type="button"
               className="btn-cancel"
-              onClick={() => navigate(`/workspaces/${workspaceId}`)}
+              onClick={() => navigate(`/workspaces/${workspace_id}`)}
             >
               Cancelar
             </button>

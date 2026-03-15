@@ -2,6 +2,10 @@ import { ServerError } from "../utils/errorUtils";
 
 const URL_API = import.meta.env.VITE_API_URL;
 
+/* =========================
+   OBTENER CANALES DEL WORKSPACE
+========================= */
+
 export async function getWorkspaceChannels(workspace_id) {
   const response_http = await fetch(
     `${URL_API}/api/workspace/${workspace_id}/channels`,
@@ -23,6 +27,10 @@ export async function getWorkspaceChannels(workspace_id) {
   return response;
 }
 
+/* =========================
+   OBTENER MENSAJES DEL CANAL
+========================= */
+
 export async function getChannelMessages(workspace_id, channel_id) {
   const response_http = await fetch(
     `${URL_API}/api/workspace/${workspace_id}/channels/${channel_id}/messages`,
@@ -43,6 +51,10 @@ export async function getChannelMessages(workspace_id, channel_id) {
 
   return response;
 }
+
+/* =========================
+   ENVIAR MENSAJE
+========================= */
 
 export async function sendChannelMessage(workspace_id, channel_id, mensaje) {
   const response_http = await fetch(
@@ -67,9 +79,13 @@ export async function sendChannelMessage(workspace_id, channel_id, mensaje) {
   return response;
 }
 
-export async function createChannel(workspaceId, body) {
+/* =========================
+   CREAR CANAL
+========================= */
+
+export async function createChannel(workspace_id, body) {
   const response_http = await fetch(
-    `${URL_API}/api/workspace/${workspaceId}/channels`,
+    `${URL_API}/api/workspace/${workspace_id}/channels`,
     {
       method: "POST",
       headers: {

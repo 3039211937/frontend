@@ -1,4 +1,8 @@
-.Channel-item {
+/* =========================
+   CHANNEL ITEM
+========================= */
+
+.channel-item {
   height: 72px;
   width: 404px;
   display: flex;
@@ -10,20 +14,42 @@
   margin-bottom: 5px;
 }
 
-.Channel-item:hover {
+.channel-item:hover {
   background-color: rgb(223, 221, 221);
 }
 
-.Channel-item__img {
+/* =========================
+   CHANNEL SELECTED (SLACK STYLE)
+========================= */
+
+.channel-selected {
+  background-color: #e8eafc;
+  border-left: 4px solid #5865f2;
+}
+
+.channel-selected .channel-item__name {
+  font-weight: 700;
+  color: #2c2f33;
+}
+
+/* =========================
+   CHANNEL ICON
+========================= */
+
+.channel-item__img {
   height: 50px;
   width: 50px;
   border-radius: 50%;
   border: 1px solid rgb(239, 239, 238);
-  padding: 0 15 0 13;
+  padding: 0 15px 0 13px;
   overflow: hidden;
 }
 
-.Channel-item__name {
+/* =========================
+   CHANNEL NAME
+========================= */
+
+.channel-item__name {
   font-size: 16px;
   color: rgb(10, 11, 11);
   font-weight: 500;
@@ -34,11 +60,20 @@
   border: none;
 }
 
+/* =========================
+   MOBILE
+========================= */
+
 @media screen and (max-width: 575px) {
-  .Channel-item {
+  .channel-item {
     width: 100%;
   }
 }
+
+/* =========================
+   EMPTY STATE
+========================= */
+
 .channel-empty {
   display: flex;
   flex-direction: column;
@@ -51,6 +86,10 @@
   color: #666;
   font-size: 14px;
 }
+
+/* =========================
+   BUTTON CREATE CHANNEL
+========================= */
 
 .btn-create-channel {
   background: #5865f2;

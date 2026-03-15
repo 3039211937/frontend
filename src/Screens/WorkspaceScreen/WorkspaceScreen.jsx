@@ -33,8 +33,6 @@ function ChannelListView({ isChannelSelected }) {
 
   return (
     <>
-      {/* BOTON SUPERIOR */}
-
       <div className="create-workspace-wrapper">
         {isChannelSelected ? (
           <Link to={`/workspaces/${workspace_id}`} className="btn-create-small">
@@ -49,8 +47,6 @@ function ChannelListView({ isChannelSelected }) {
           </Link>
         )}
       </div>
-
-      {/* LISTA DE CANALES */}
 
       <div className="workspace-list-card">
         {channelList?.length > 0 ? (
@@ -81,7 +77,7 @@ function ChannelListView({ isChannelSelected }) {
 }
 
 /* =========================
-   PANTALLA PRINCIPAL WORKSPACE
+   WORKSPACE SCREEN
 ========================= */
 
 export default function WorkspaceScreen() {
@@ -98,6 +94,7 @@ export default function WorkspaceScreen() {
   const [inviteRole, setInviteRole] = useState("Member");
 
   const isChannelSelected = location.pathname.includes("/channels/");
+  const isCreateChannel = location.pathname.includes("/create-channel");
 
   useEffect(() => {
     async function loadWorkspace() {
@@ -170,7 +167,7 @@ export default function WorkspaceScreen() {
           </div>
 
           <div className="workspace-center">
-            {isChannelSelected ? (
+            {isChannelSelected || isCreateChannel ? (
               <Outlet />
             ) : (
               <>

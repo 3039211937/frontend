@@ -12,14 +12,22 @@ const ChannelListContextProvider = ({ children, workspace_id }) => {
   const [isChannelListLoading, setIsChannelListLoading] = useState(false);
 
   const loadChannelList = async () => {
+    /* PROTECTION: prevent invalid requests */
+    if (!workspace_id || workspace_id === "undefined") {
+      return;
+    }
+
     try {
       setIsChannelListLoading(true);
 
       const response = await getWorkspaceChannels(workspace_id);
 
-      setChannelList(response.data.channels || []);
+      const channels = response?.data?.channels || [];
+
+      setChannelList(channels);
     } catch (error) {
       console.error("Error loading channels:", error);
+
       setChannelList([]);
     } finally {
       setIsChannelListLoading(false);
@@ -27,9 +35,12 @@ const ChannelListContextProvider = ({ children, workspace_id }) => {
   };
 
   useEffect(() => {
-    if (workspace_id) {
-      loadChannelList();
+    /* PROTECTION: ensure valid workspace_id */
+    if (!workspace_id || workspace_id === "undefined") {
+      return;
     }
+
+    loadChannelList();
   }, [workspace_id]);
 
   return (

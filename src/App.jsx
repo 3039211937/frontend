@@ -35,8 +35,7 @@ import ChannelDetailContextProvider from "./Context/ChannelDetailContext";
 import ChannelMessagesScreen from "./Screens/ChannelMessagesScreen/ChannelMessagesScreen";
 
 /* =========================
-   PANTALLA CENTRAL DEL WORKSPACE
-   (cuando no hay canal seleccionado)
+   PANTALLA CENTRAL WORKSPACE
 ========================= */
 
 import WorkspaceCenterScreen from "./Screens/WorkspaceCenterScreen/WorkspaceCenterScreen";
@@ -47,22 +46,16 @@ function App() {
       <Routes>
         {/* =========================
             RUTAS PUBLICAS
-           ========================= */}
+        ========================= */}
 
         <Route path="/" element={<LoginScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
-
-        {/* =========================
-            ACEPTAR INVITACION
-           ========================= */}
-
         <Route path="/accept-invitation" element={<AcceptInvitationScreen />} />
 
         {/* =========================
             RUTAS PRIVADAS
-            (requieren autenticación)
-           ========================= */}
+        ========================= */}
 
         <Route element={<AuthMiddleware />}>
           {/* HOME */}
@@ -86,21 +79,20 @@ function App() {
 
           {/* =========================
               WORKSPACE
-             ========================= */}
+          ========================= */}
 
           <Route path="/workspaces/:workspace_id" element={<Workspace />}>
-            {/* PANTALLA POR DEFECTO
-               (info del workspace y miembros) */}
+            {/* WORKSPACE HOME */}
 
             <Route index element={<WorkspaceCenterScreen />} />
 
-            {/* CREAR CANAL */}
+            {/* CREATE CHANNEL */}
 
             <Route path="create-channel" element={<CreateChannelScreen />} />
 
             {/* =========================
-                CHAT DEL CANAL
-               ========================= */}
+                CHANNEL CHAT
+            ========================= */}
 
             <Route
               path="channels/:channel_id"
