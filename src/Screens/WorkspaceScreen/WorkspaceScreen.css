@@ -7,26 +7,38 @@
   background: #f8f9fb;
 }
 
+/* =========================
+   MAIN WORKSPACE LAYOUT
+========================= */
+
 .workspace-main {
   flex: 1;
   display: flex;
   width: 100%;
   height: 100%;
   min-width: 0;
+  overflow: hidden;
 }
+
+/* =========================
+   SIDEBAR
+========================= */
 
 .workspace-sidebar {
-  width: 180px;
-  min-width: 80px;
-  max-width: 80px;
+  width: 80px;
   flex-shrink: 0;
   border-right: 1px solid #e5e5e5;
+  background: white;
 }
 
-.Channel-list {
-  width: 350px;
-  min-width: 350px;
-  max-width: 350px;
+/* =========================
+   CHANNEL LIST
+========================= */
+
+.channel-list {
+  width: 320px;
+  min-width: 260px;
+  max-width: 360px;
 
   display: flex;
   flex-direction: column;
@@ -37,46 +49,51 @@
   overflow-y: auto;
 }
 
-.no-messages-container {
+/* =========================
+   WORKSPACE CENTER
+========================= */
+
+.workspace-center {
   flex: 1;
-  min-width: 0;
-
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  padding: 80px 40px;
-
-  background: #f8f9fb;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
   overflow-y: auto;
+  min-width: 0;
 }
+
+/* =========================
+   WORKSPACE HEADER CARD
+========================= */
 
 .workspace-header {
   width: 100%;
-  max-width: 520px;
-
-  padding: 30px;
-
+  max-width: 900px;
   background: white;
   border-radius: 10px;
-  border: 1px solid #e5e5e5;
+  padding: 25px 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+}
 
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+.workspace-header > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
 
 .workspace-header h1 {
-  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
 }
 
 .workspace-header p {
   margin: 6px 0;
   font-size: 14px;
-}
-
-.workspace-header__image {
-  max-width: 200px;
-  margin-top: 10px;
-  display: block;
 }
 
 .workspace-header__meta {
@@ -85,6 +102,156 @@
   margin-top: 10px;
   font-size: 14px;
 }
+
+/* =========================
+   MEMBERS LIST
+========================= */
+
+.workspace-center h3 {
+  width: 100%;
+  max-width: 900px;
+}
+
+.workspace-center .workspace-list-card {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* =========================
+   CHAT CONTAINER
+========================= */
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  background: #f4f4f4;
+}
+
+/* =========================
+   CHAT HEADER
+========================= */
+
+.chat-header {
+  padding: 16px 22px;
+  border-bottom: 1px solid #ddd;
+  background: white;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+  gap: 10px;
+}
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.chat-refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   MESSAGE LIST
+========================= */
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 25px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* =========================
+   INPUT AREA
+========================= */
+
+.chat-input {
+  border-top: 1px solid #ddd;
+  background: white;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chat-input form {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  align-items: center;
+  background: #f0f0f0;
+  border-radius: 28px;
+  padding: 6px 10px 6px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  gap: 8px;
+}
+
+.chat-input textarea {
+  flex: 1;
+  border: none;
+  resize: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  padding: 10px;
+  font-family: inherit;
+  min-height: 36px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.chat-input button {
+  border: none;
+  background: #2eb67d;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.chat-input button:hover {
+  background: #27a36d;
+  transform: scale(1.05);
+}
+
+.chat-input button img {
+  width: 18px;
+  height: 18px;
+}
+
+.chat-loading {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+}
+
+/* =========================
+   INVITE MODAL
+========================= */
 
 .invite-modal-overlay {
   position: fixed;
@@ -100,6 +267,7 @@
   padding: 30px;
   border-radius: 8px;
   width: 350px;
+  max-width: 90%;
 }
 
 .invite-modal input,
@@ -116,67 +284,77 @@
 }
 
 /* =========================
-   PANEL CENTRAL DEL WORKSPACE
-   ocupa todo el espacio disponible
+   RESPONSIVE BREAKPOINTS
 ========================= */
 
-.workspace-center {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* centra horizontalmente */
-  padding: 30px;
-  overflow-y: auto;
+/* Laptop */
+
+@media (max-width: 1400px) {
+  .channel-list {
+    width: 280px;
+  }
 }
 
-/* =========================
-   TARJETA DE INFORMACION DEL WORKSPACE
-========================= */
+/* Tablet */
 
-.workspace-header {
-  width: 100%;
-  max-width: 900px; /* hace la tarjeta más ancha */
-  background: white;
-  border-radius: 10px;
-  padding: 25px 30px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  margin-bottom: 25px;
+@media (max-width: 992px) {
+  .workspace-sidebar {
+    display: none;
+  }
+
+  .channel-list {
+    width: 260px;
+    min-width: 260px;
+  }
+
+  .workspace-center {
+    padding: 20px;
+  }
 }
 
-/* header con titulo + boton */
+/* Small tablet */
 
-.workspace-header > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px; /* separa el botón del título */
+@media (max-width: 768px) {
+  .workspace-main {
+    flex-direction: column;
+  }
+
+  .channel-list {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .workspace-center {
+    width: 100%;
+    padding: 15px;
+  }
 }
 
-/* titulo del workspace */
+/* Mobile */
 
-.workspace-header h1 {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0;
-  flex: 1;
+@media (max-width: 575px) {
+  .workspace-header h1 {
+    font-size: 22px;
+  }
+
+  .workspace-header > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .workspace-header .btn-create-small {
+    width: 100%;
+  }
 }
 
-/* boton invitar */
+/* Small phones */
 
-.workspace-header .btn-create-small {
-  white-space: nowrap;
-}
-
-/* =========================
-   LISTA DE MIEMBROS
-========================= */
-
-.workspace-center h3 {
-  width: 100%;
-  max-width: 900px;
-}
-
-.workspace-center .workspace-list-card {
-  width: 100%;
-  max-width: 900px;
+@media (max-width: 420px) {
+  .chat-input button {
+    width: 38px;
+    height: 38px;
+  }
 }
