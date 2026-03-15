@@ -1,15 +1,82 @@
 /* =========================
+   CHANNEL ITEM
+========================= */
+
+.channel-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  min-height: 60px;
+
+  padding: 12px 16px;
+
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+
+  transition: background 0.15s ease;
+}
+
+.channel-item:hover {
+  background: #f5f6fa;
+}
+
+/* =========================
+   CHANNEL ICON
+========================= */
+
+.channel-item__icon {
+  width: 36px;
+  height: 36px;
+
+  min-width: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #5865f2;
+  color: white;
+  font-weight: 600;
+
+  border-radius: 8px;
+}
+
+/* =========================
+   CHANNEL NAME
+========================= */
+
+.channel-item__name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+
+  flex: 1;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================
    DELETE CHANNEL ICON
 ========================= */
 
 .channel-delete-btn {
   margin-left: auto;
+
   border: none;
   background: transparent;
+
   cursor: pointer;
+
   color: #888;
+
   display: none;
 }
+
+/* show delete on hover (desktop) */
 
 .channel-item:hover .channel-delete-btn {
   display: block;
@@ -17,4 +84,65 @@
 
 .channel-delete-btn:hover {
   color: #e01e5a;
+}
+
+/* =========================
+   TOUCH DEVICES
+   (no hover support)
+========================= */
+
+@media (hover: none) {
+  .channel-delete-btn {
+    display: block;
+  }
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 768px) {
+  .channel-item {
+    padding: 12px;
+  }
+
+  .channel-item__icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 575px) {
+  .channel-item {
+    padding: 10px;
+    min-height: 54px;
+  }
+
+  .channel-item__name {
+    font-size: 13px;
+  }
+
+  .channel-delete-btn {
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 420px) {
+  .channel-item__icon {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .channel-item__name {
+    font-size: 12px;
+  }
 }
