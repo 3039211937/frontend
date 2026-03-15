@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { createChannel } from "../../services/channelService";
+import { ChannelListContext } from "../../Context/ChannelListContext";
 
 import "./CreateChannelScreen.css";
 
 export default function CreateChannelScreen() {
-  /* FIXED PARAM NAME */
   const { workspace_id } = useParams();
-
   const navigate = useNavigate();
+
+  const { reloadChannels } = useContext(ChannelListContext);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -32,6 +33,9 @@ export default function CreateChannelScreen() {
         name,
         description,
       });
+
+      /* REFRESH CHANNEL LIST */
+      await reloadChannels();
 
       navigate(`/workspaces/${workspace_id}`);
     } catch (err) {
