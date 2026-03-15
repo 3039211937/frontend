@@ -1,107 +1,20 @@
 /* =========================
-   CHANNEL ITEM
+   DELETE CHANNEL ICON
 ========================= */
 
-.channel-item {
-  height: 72px;
-  width: 404px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 15px;
-  transition: background-color 0.2s ease;
-  border-radius: 10px;
-  margin-bottom: 5px;
-}
-
-.channel-item:hover {
-  background-color: rgb(223, 221, 221);
-}
-
-/* =========================
-   CHANNEL SELECTED (SLACK STYLE)
-========================= */
-
-.channel-selected {
-  background-color: #e8eafc;
-  border-left: 4px solid #5865f2;
-}
-
-.channel-selected .channel-item__name {
-  font-weight: 700;
-  color: #2c2f33;
-}
-
-/* =========================
-   CHANNEL ICON
-========================= */
-
-.channel-item__img {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  border: 1px solid rgb(239, 239, 238);
-  padding: 0 15px 0 13px;
-  overflow: hidden;
-}
-
-/* =========================
-   CHANNEL NAME
-========================= */
-
-.channel-item__name {
-  font-size: 16px;
-  color: rgb(10, 11, 11);
-  font-weight: 500;
-  text-decoration: none;
-  display: flex;
-  justify-content: start;
-  margin-left: 25px;
+.channel-delete-btn {
+  margin-left: auto;
   border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #888;
+  display: none;
 }
 
-/* =========================
-   MOBILE
-========================= */
-
-@media screen and (max-width: 575px) {
-  .channel-item {
-    width: 100%;
-  }
+.channel-item:hover .channel-delete-btn {
+  display: block;
 }
 
-/* =========================
-   EMPTY STATE
-========================= */
-
-.channel-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding: 30px 20px;
-}
-
-.channel-empty-text {
-  color: #666;
-  font-size: 14px;
-}
-
-/* =========================
-   BUTTON CREATE CHANNEL
-========================= */
-
-.btn-create-channel {
-  background: #5865f2;
-  color: white;
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  transition: background 0.2s ease;
-}
-
-.btn-create-channel:hover {
-  background: #4752c4;
+.channel-delete-btn:hover {
+  color: #e01e5a;
 }

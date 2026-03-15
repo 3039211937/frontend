@@ -105,3 +105,28 @@ export async function createChannel(workspace_id, body) {
 
   return response;
 }
+
+/* =========================
+   ELIMINAR CANAL
+========================= */
+
+export async function deleteChannel(workspace_id, channel_id) {
+  const response_http = await fetch(
+    `${URL_API}/api/workspace/${workspace_id}/channels/${channel_id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "x-api-key": import.meta.env.VITE_API_KEY,
+        Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
+      },
+    },
+  );
+
+  const response = await response_http.json();
+
+  if (!response_http.ok) {
+    throw new ServerError(response.message, response_http.status);
+  }
+
+  return response;
+}

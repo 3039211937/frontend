@@ -25,7 +25,46 @@ import "../HomeScreen/HomeScreen.css";
 
 function ChannelListView({ isChannelSelected }) {
   const { workspace_id } = useParams();
-  const { channelList, isChannelListLoading } = useContext(ChannelListContext);
+
+  const { channelList, isChannelListLoading, reloadChannels } =
+    useContext(ChannelListContext);
+
+  const handleDeleteChannel = async (e, channel) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const confirm = await Swal.fire({
+      title: "Eliminar canal",
+      text: `¿Eliminar el canal "${channel.name}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e01e5a",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Eliminar",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      await fetch(
+        `${import.meta.env.VITE_API_URL}/api/workspace/${workspace_id}/channels/${channel._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "x-api-key": import.meta.env.VITE_API_KEY,
+            Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
+          },
+        },
+      );
+
+      await reloadChannels();
+
+      Swal.fire("Canal eliminado", "", "success");
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error eliminando canal", "", "error");
+    }
+  };
 
   if (isChannelListLoading) {
     return <span>Cargando canales...</span>;
@@ -62,7 +101,12 @@ function ChannelListView({ isChannelSelected }) {
 
                 <span className="workspace-name">{channel.name}</span>
 
-                <span className="workspace-arrow">→</span>
+                <button
+                  className="icon-btn delete"
+                  onClick={(e) => handleDeleteChannel(e, channel)}
+                >
+                  <FiTrash2 />
+                </button>
               </Link>
             </div>
           ))
