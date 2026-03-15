@@ -19,7 +19,24 @@ fetch recibe:
 2) objeto de configuración
 */
 
-const URL_API = import.meta.env.VITE_API_URL;
+/*
+==================================================
+CONFIGURACIÓN DE API
+==================================================
+
+Normalizamos la URL para evitar errores como:
+
+https://backend.vercel.app//api/auth/login
+
+Si la variable termina con "/", la removemos.
+*/
+
+const RAW_API_URL = import.meta.env.VITE_API_URL || "";
+const URL_API = RAW_API_URL.endsWith("/")
+  ? RAW_API_URL.slice(0, -1)
+  : RAW_API_URL;
+
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 /*
 =========================
@@ -28,10 +45,10 @@ LOGIN
 */
 
 export async function login(email, password) {
-  const response_http = await fetch(URL_API + "/api/auth/login", {
+  const response_http = await fetch(`${URL_API}/api/auth/login`, {
     method: "POST",
     headers: {
-      "x-api-key": import.meta.env.VITE_API_KEY,
+      "x-api-key": API_KEY,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -56,10 +73,10 @@ REGISTER
 */
 
 export async function register(username, password, email) {
-  const response_http = await fetch(URL_API + "/api/auth/register", {
+  const response_http = await fetch(`${URL_API}/api/auth/register`, {
     method: "POST",
     headers: {
-      "x-api-key": import.meta.env.VITE_API_KEY,
+      "x-api-key": API_KEY,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -92,10 +109,10 @@ el error "Unexpected token <"
 */
 
 export async function logout() {
-  const response_http = await fetch(URL_API + "/api/auth/logout", {
+  const response_http = await fetch(`${URL_API}/api/auth/logout`, {
     method: "POST",
     headers: {
-      "x-api-key": import.meta.env.VITE_API_KEY,
+      "x-api-key": API_KEY,
       Authorization: "Bearer " + sessionStorage.getItem("auth_token"),
     },
   });
