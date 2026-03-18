@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import LoginScreen from "./Screens/LoginScreen/LoginScreen";
 import RegisterScreen from "./Screens/RegisterScreen/RegisterScreen";
 import AcceptInvitationScreen from "./Screens/AcceptInvitationScreen/AcceptInvitationScreen";
+import VerifyEmailScreen from "./Screens/VerifyEmailScreen/VerifyEmailScreen"; // ✅ FIX
 
 /* =========================
    CONTEXTOS Y MIDDLEWARE
@@ -52,6 +53,7 @@ function App() {
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/accept-invitation" element={<AcceptInvitationScreen />} />
+        <Route path="/verify-email" element={<VerifyEmailScreen />} />
 
         {/* =========================
             RUTAS PRIVADAS

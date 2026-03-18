@@ -149,3 +149,29 @@ Ejemplo de respuesta esperada del backend:
   "data": null
 }
 */
+
+/*
+=========================
+VERIFY EMAIL
+=========================
+*/
+
+export async function verifyEmail(token) {
+  const response_http = await fetch(
+    `${URL_API}/api/auth/verify-email?verification_email_token=${token}`,
+    {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+      },
+    },
+  );
+
+  const response = await response_http.json();
+
+  if (!response.ok) {
+    throw new ServerError(response.message, response.status);
+  }
+
+  return response;
+}
