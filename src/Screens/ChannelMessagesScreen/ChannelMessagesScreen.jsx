@@ -23,7 +23,45 @@ const ChannelMessagesScreen = () => {
   const currentChannel = channelList?.find((c) => c._id === channel_id);
 
   /* =========================
-     REFRESH CHAT + CHANNEL LIST
+     GET CURRENT USER (FROM TOKEN)
+  ========================= */
+
+  const getCurrentUser = () => {
+    try {
+      const token = sessionStorage.getItem("auth_token");
+      if (!token) return null;
+
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload;
+    } catch {
+      return null;
+    }
+  };
+
+  /* =========================
+     WRAP CREATE MESSAGE
+  ========================= */
+
+  const handleCreateMessage = async (messageText) => {
+    const user = getCurrentUser();
+
+    await onCreateNewMessage(messageText);
+
+    // 🔥 FIX: patch last message locally (optimistic UI)
+    if (user && channelMessages.length > 0) {
+      const lastMessage = channelMessages[channelMessages.length - 1];
+
+      if (!lastMessage.user) {
+        lastMessage.user = {
+          username: user.username,
+          email: user.email,
+        };
+      }
+    }
+  };
+
+  /* =========================
+     REFRESH
   ========================= */
 
   const handleRefresh = async () => {
@@ -56,7 +94,7 @@ const ChannelMessagesScreen = () => {
       </div>
 
       <div className="chat-input">
-        <NewMessageForm onCreateNewMessage={onCreateNewMessage} />
+        <NewMessageForm onCreateNewMessage={handleCreateMessage} />
       </div>
     </div>
   );
