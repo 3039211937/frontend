@@ -95,17 +95,14 @@ function ChannelListView({ isChannelSelected }) {
                 to={`/workspaces/${workspace_id}/channels/${channel._id}`}
                 className="workspace-link"
               >
-                {/* ICON */}
                 <div className="workspace-icon">
                   {channel.name.charAt(0).toUpperCase()}
                 </div>
 
-                {/* TEXT */}
                 <div className="workspace-text">
                   <span className="workspace-name">{channel.name}</span>
                 </div>
 
-                {/* ACTIONS */}
                 <div className="workspace-actions">
                   <button
                     className="icon-btn delete"
@@ -115,7 +112,6 @@ function ChannelListView({ isChannelSelected }) {
                   </button>
                 </div>
 
-                {/* ARROW */}
                 <span className="workspace-arrow">
                   <FiArrowRight />
                 </span>
@@ -145,10 +141,6 @@ export default function WorkspaceScreen() {
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [showInviteModal, setShowInviteModal] = useState(false);
-  const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteRole, setInviteRole] = useState("Member");
-
   const isChannelSelected = location.pathname.includes("/channels/");
   const isCreateChannel = location.pathname.includes("/create-channel");
 
@@ -171,6 +163,90 @@ export default function WorkspaceScreen() {
     loadWorkspace();
   }, [workspace_id]);
 
+  const handleRemoveMember = async (member_id, email) => {
+    const confirm = await Swal.fire({
+      title: "Eliminar miembro",
+      text: `¿Eliminar a ${email}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e01e5a",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Eliminar",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      await removeWorkspaceMember(workspace_id, member_id);
+
+      setMembers((prev) => prev.filter((m) => m.member_id !== member_id));
+
+      Swal.fire("Miembro eliminado", "", "success");
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error", error.message, "error");
+    }
+  };
+
+  /* =========================
+     INVITAR USUARIO (FIXED)
+  ========================= */
+
+  const handleInvite = async () => {
+    const { value: formValues } = await Swal.fire({
+      title: "Invitar usuario",
+      html: `
+        <input id="swal-email" class="swal2-input" placeholder="Email" type="email">
+        <select id="swal-role" class="swal2-select">
+          <option value="User">Usuario</option>
+          <option value="Admin">Admin</option>
+        </select>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: "Invitar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#4f46e5",
+      preConfirm: () => {
+        const email = document.getElementById("swal-email").value;
+        const role = document.getElementById("swal-role").value;
+
+        if (!email) {
+          Swal.showValidationMessage("El email es obligatorio");
+          return;
+        }
+
+        return { email, role };
+      },
+    });
+
+    if (!formValues) return;
+
+    try {
+      await inviteWorkspaceMember(
+        workspace_id,
+        formValues.email,
+        formValues.role,
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Invitación enviada",
+        text: "El usuario recibirá un email para unirse",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.error(error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.message || "No se pudo enviar la invitación",
+      });
+    }
+  };
+
   if (loading) return <span>Loading...</span>;
   if (!workspace) return <span>Workspace no encontrado</span>;
 
@@ -190,7 +266,87 @@ export default function WorkspaceScreen() {
             {isChannelSelected || isCreateChannel ? (
               <Outlet />
             ) : (
-              <h1>{workspace.title}</h1>
+              <>
+                {/* HEADER */}
+                <div className="workspace-header">
+                  <div>
+                    <h1>{workspace.title}</h1>
+
+                    <button className="btn-create-small" onClick={handleInvite}>
+                      + Invitar usuario
+                    </button>
+                  </div>
+
+                  {workspace.description && <p>{workspace.description}</p>}
+
+                  <p>
+                    <strong>Creado:</strong>{" "}
+                    {new Date(workspace.created_at).toLocaleDateString()}
+                  </p>
+
+                  <p>
+                    <strong>Estado:</strong>{" "}
+                    {workspace.active ? "Activo" : "Inactivo"}
+                  </p>
+
+                  {member && (
+                    <p>
+                      <strong>Tu rol:</strong> {member.role}
+                    </p>
+                  )}
+                </div>
+
+                {/* MEMBERS */}
+                <h3 style={{ marginTop: "20px" }}>Miembros</h3>
+
+                <div className="workspace-list-card">
+                  {members.length > 0 ? (
+                    members.map((member) => (
+                      <div key={member.member_id} className="workspace-item">
+                        <div className="workspace-link">
+                          <div className="workspace-icon">
+                            {member.email.charAt(0).toUpperCase()}
+                          </div>
+
+                          <div className="workspace-text">
+                            <span className="workspace-name">
+                              {member.email}
+                            </span>
+                          </div>
+
+                          <span
+                            style={{
+                              marginRight: "12px",
+                              fontSize: "13px",
+                              color: "#666",
+                            }}
+                          >
+                            {member.role}
+                          </span>
+
+                          {member.role !== "Owner" && (
+                            <button
+                              className="icon-btn delete"
+                              onClick={() =>
+                                handleRemoveMember(
+                                  member.member_id,
+                                  member.email,
+                                )
+                              }
+                            >
+                              <FiTrash2 />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <span className="empty-message">
+                      No hay miembros en este workspace
+                    </span>
+                  )}
+                </div>
+              </>
             )}
           </div>
         </div>
