@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./SideBar.css";
 import { IoArrowBack } from "react-icons/io5";
+import supportIcon from "../../assets/support-icon.png"; // ✅ adjust path if needed
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -24,9 +25,9 @@ const SideBar = () => {
 
       <div className="sidebar-container__bottom">
         <img
-          src="https://rtrsports.com/wp-content/uploads/2024/07/senna-1.jpg"
+          src={supportIcon} // ✅ local asset
           className="sidebar-container__img"
-          alt="profile"
+          alt="support"
         />
       </div>
     </div>

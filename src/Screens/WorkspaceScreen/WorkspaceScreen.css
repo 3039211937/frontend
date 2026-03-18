@@ -51,6 +51,30 @@
   min-height: 0;
 }
 
+/* 🔥 FIX: ensure rows behave like HomeScreen */
+
+.channel-list .workspace-list-card {
+  width: 100%;
+}
+
+.channel-list .workspace-link {
+  display: flex;
+  align-items: center;
+  width: 100%; /* 🔥 important */
+}
+
+.channel-list .workspace-text {
+  flex-grow: 1; /* 🔥 pushes actions right */
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-list .workspace-actions {
+  margin-left: auto; /* 🔥 push to right */
+  display: flex;
+  gap: 8px;
+}
+
 /* =========================
    WORKSPACE CENTER
 ========================= */
@@ -334,18 +358,14 @@
 }
 
 /* =========================
-   RESPONSIVE BREAKPOINTS
+   RESPONSIVE
 ========================= */
-
-/* Laptop */
 
 @media (max-width: 1400px) {
   .channel-list {
     width: 280px;
   }
 }
-
-/* Tablet */
 
 @media (max-width: 992px) {
   .workspace-sidebar {
@@ -361,8 +381,6 @@
     padding: 20px;
   }
 }
-
-/* Small tablet */
 
 @media (max-width: 768px) {
   .workspace-main {
@@ -382,8 +400,6 @@
   }
 }
 
-/* Mobile */
-
 @media (max-width: 575px) {
   .workspace-header h1 {
     font-size: 22px;
@@ -399,8 +415,6 @@
     width: 100%;
   }
 }
-
-/* Small phones */
 
 @media (max-width: 420px) {
   .chat-input button {

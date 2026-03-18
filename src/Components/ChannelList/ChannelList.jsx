@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { FiTrash2 } from "react-icons/fi";
+import { FiTrash2, FiArrowRight } from "react-icons/fi";
 
 import { ChannelListContext } from "../../Context/ChannelListContext";
 import { deleteChannel } from "../../services/channelService";
@@ -19,7 +19,7 @@ const ChannelList = () => {
   }
 
   return (
-    <div>
+    <div className="channel-list-card">
       {!channelList || channelList.length === 0 ? (
         <div className="channel-empty">
           <span className="channel-empty-text">
@@ -67,7 +67,6 @@ const ChannelItem = ({
 
     try {
       await deleteChannel(workspace_id, channel._id);
-
       await reloadChannels();
 
       Swal.fire("Canal eliminado", "", "success");
@@ -78,17 +77,28 @@ const ChannelItem = ({
   };
 
   return (
-    <Link to={`/workspaces/${workspace_id}/channels/${channel._id}`}>
-      <div className={`channel-item ${isSelected ? "channel-selected" : ""}`}>
-        <div className="channel-item__icon">
+    <Link
+      to={`/workspaces/${workspace_id}/channels/${channel._id}`}
+      className="channel-link"
+    >
+      <div className={`channel-row ${isSelected ? "channel-selected" : ""}`}>
+        <div className="channel-icon">
           {channel.name.charAt(0).toUpperCase()}
         </div>
 
-        <h2 className="channel-item__name">{channel.name}</h2>
+        <div className="channel-text">
+          <span className="channel-name">{channel.name}</span>
+        </div>
 
-        <button className="channel-delete-btn" onClick={handleDelete}>
-          <FiTrash2 />
-        </button>
+        <div className="channel-actions">
+          <button className="icon-btn delete" onClick={handleDelete}>
+            <FiTrash2 />
+          </button>
+        </div>
+
+        <span className="channel-arrow">
+          <FiArrowRight />
+        </span>
       </div>
     </Link>
   );

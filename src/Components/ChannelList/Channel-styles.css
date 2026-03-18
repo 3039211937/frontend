@@ -1,148 +1,100 @@
-/* =========================
-   CHANNEL ITEM
-========================= */
+.channel-list-card {
+  background: white;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-.channel-item {
+/* ROW */
+
+.channel-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-
-  width: 100%;
-  min-height: 60px;
-
-  padding: 12px 16px;
-
-  cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
-
-  transition: background 0.15s ease;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eeeeee;
+  transition: all 0.15s ease;
 }
 
-.channel-item:hover {
-  background: #f5f6fa;
+.channel-row:last-child {
+  border-bottom: none;
 }
 
-/* =========================
-   CHANNEL ICON
-========================= */
+.channel-row:hover {
+  background-color: #f9f9f9;
+}
 
-.channel-item__icon {
-  width: 36px;
-  height: 36px;
+/* SELECTED */
 
-  min-width: 36px;
+.channel-selected {
+  background-color: #eef6ff;
+}
+
+/* LINK */
+
+.channel-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ICON */
+
+.channel-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #4a154b;
+  color: white;
+  border-radius: 6px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: #5865f2;
-  color: white;
-  font-weight: 600;
-
-  border-radius: 8px;
+  font-weight: bold;
+  margin-right: 10px;
 }
 
-/* =========================
-   CHANNEL NAME
-========================= */
+/* TEXT */
 
-.channel-item__name {
+.channel-text {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* 🔥 pushes actions right */
+}
+
+.channel-name {
   font-size: 14px;
-  font-weight: 500;
-  color: #333;
-
-  flex: 1;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-weight: 600;
 }
 
-/* =========================
-   DELETE CHANNEL ICON
-========================= */
+/* ACTIONS */
 
-.channel-delete-btn {
+.channel-actions {
+  display: flex;
   margin-left: auto;
-
-  border: none;
-  background: transparent;
-
-  cursor: pointer;
-
-  color: #888;
-
-  display: none;
+  margin-right: 8px;
 }
 
-/* show delete on hover (desktop) */
+/* ARROW */
 
-.channel-item:hover .channel-delete-btn {
-  display: block;
+.channel-arrow {
+  width: 28px;
+  height: 28px;
+  background-color: #0d6efd;
+  color: white;
+  border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.channel-delete-btn:hover {
-  color: #e01e5a;
+/* EMPTY */
+
+.channel-empty {
+  padding: 20px;
+  text-align: center;
 }
 
-/* =========================
-   TOUCH DEVICES
-   (no hover support)
-========================= */
-
-@media (hover: none) {
-  .channel-delete-btn {
-    display: block;
-  }
-}
-
-/* =========================
-   TABLET
-========================= */
-
-@media (max-width: 768px) {
-  .channel-item {
-    padding: 12px;
-  }
-
-  .channel-item__icon {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 575px) {
-  .channel-item {
-    padding: 10px;
-    min-height: 54px;
-  }
-
-  .channel-item__name {
-    font-size: 13px;
-  }
-
-  .channel-delete-btn {
-    font-size: 14px;
-  }
-}
-
-/* =========================
-   SMALL MOBILE
-========================= */
-
-@media (max-width: 420px) {
-  .channel-item__icon {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-  }
-
-  .channel-item__name {
-    font-size: 12px;
-  }
+.channel-empty-text {
+  color: #616061;
 }
