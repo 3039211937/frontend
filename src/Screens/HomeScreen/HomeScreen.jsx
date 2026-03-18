@@ -196,9 +196,17 @@ const HomeScreen = () => {
                   {workspace.workspace_title.charAt(0).toUpperCase()}
                 </div>
 
-                <span className="workspace-name">
-                  {workspace.workspace_title}
-                </span>
+                <div className="workspace-text">
+                  <span className="workspace-name">
+                    {workspace.workspace_title}
+                  </span>
+
+                  {workspace.description && (
+                    <span className="workspace-description">
+                      {workspace.description}
+                    </span>
+                  )}
+                </div>
 
                 <div className="workspace-actions">
                   <button

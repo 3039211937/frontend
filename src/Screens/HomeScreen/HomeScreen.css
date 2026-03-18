@@ -255,3 +255,14 @@
   color: var(--slack-purple);
   font-weight: 600;
 }
+
+.workspace-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace-description {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 2px;
+}
