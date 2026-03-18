@@ -1,72 +1,94 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router';
-import useCreateWorkspace from '../../hooks/useCreateWorkspace';
-import './CreateWorkspaceScreen.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import useCreateWorkspace from "../../hooks/useCreateWorkspace";
+import "./CreateWorkspaceScreen.css";
 
 const CreateWorkspaceScreen = () => {
-    const {
-        form_state,
-        onChangeFieldValue,
-        onSubmitForm,
-        isLoading,
-        error,
-        errors
-    } = useCreateWorkspace();
+  const {
+    form_state,
+    onChangeFieldValue,
+    onSubmitForm,
+    isLoading,
+    error,
+    errors,
+  } = useCreateWorkspace();
 
-    return (
-        <div className="create-workspace-container">
-            <div className="create-workspace-card">
-                <header className="create-workspace-header">
-                    <h1>Crear un nuevo espacio de trabajo</h1>
-                    <p>Los espacios de trabajo son donde tu equipo se comunica.</p>
-                </header>
+  return (
+    <div className="create-container">
+      <h1 className="create-title">Crear workspace</h1>
 
-                <form className="workspace-form" onSubmit={onSubmitForm}>
-                    <div className="form-group">
-                        <label htmlFor="title" className="form-label">Nombre del espacio de trabajo</label>
-                        <input
-                            type="text"
-                            id="title"
-                            name="title"
-                            className="form-input"
-                            placeholder="Ej. Proyecto Alpha"
-                            value={form_state.title}
-                            onChange={onChangeFieldValue}
-                            disabled={isLoading}
-                        />
-                        {errors.title && <span className="error-message">⚠️ {errors.title}</span>}
-                    </div>
+      <p className="create-subtitle">
+        Los espacios de trabajo son donde tu equipo se comunica.
+      </p>
 
-                    <div className="form-group">
-                        <label htmlFor="description" className="form-label">Descripción</label>
-                        <textarea
-                            id="description"
-                            name="description"
-                            className="form-textarea"
-                            placeholder="¿De qué trata este espacio?"
-                            value={form_state.description}
-                            onChange={onChangeFieldValue}
-                            disabled={isLoading}
-                        />
-                        <div className={`char-counter ${form_state.description.length > 900 ? 'limit-near' : ''} ${form_state.description.length >= 1000 ? 'limit-reached' : ''}`}>
-                            {form_state.description.length} / 1000
-                        </div>
-                        {errors.description && <span className="error-message">⚠️ {errors.description}</span>}
-                    </div>
+      <div className="create-card">
+        <form className="create-form" onSubmit={onSubmitForm}>
+          {/* TITLE */}
+          <div className="form-group">
+            <label className="form-label">Nombre del workspace</label>
 
-                    {error && <div className="error-message">Error al crear el workspace: {error.message}</div>}
+            <input
+              type="text"
+              name="title"
+              className="form-input"
+              placeholder="Ej. Proyecto Alpha"
+              value={form_state.title}
+              onChange={onChangeFieldValue}
+              disabled={isLoading}
+            />
 
-                    <button type="submit" className="submit-btn" disabled={form_state.description.length > 1000 || isLoading}>
-                        {isLoading ? 'Creando...' : 'Crear espacio de trabajo'}
-                    </button>
-                </form>
+            {errors.title && (
+              <span className="error-text">⚠️ {errors.title}</span>
+            )}
+          </div>
 
-                <div className="back-link">
-                    <Link to="/home">Volver a la lista de workspaces</Link>
-                </div>
+          {/* DESCRIPTION */}
+          <div className="form-group">
+            <label className="form-label">Descripción</label>
+
+            <textarea
+              name="description"
+              className="form-textarea"
+              placeholder="¿De qué trata este espacio?"
+              value={form_state.description}
+              onChange={onChangeFieldValue}
+              disabled={isLoading}
+            />
+
+            <div
+              className={`char-counter ${
+                form_state.description.length > 900 ? "warn" : ""
+              } ${form_state.description.length >= 1000 ? "error" : ""}`}
+            >
+              {form_state.description.length} / 1000
             </div>
-        </div>
-    );
+
+            {errors.description && (
+              <span className="error-text">⚠️ {errors.description}</span>
+            )}
+          </div>
+
+          {/* GLOBAL ERROR */}
+          {error && <div className="error-box">Error: {error.message}</div>}
+
+          {/* ACTIONS */}
+          <div className="form-actions">
+            <Link to="/home" className="btn-secondary">
+              Cancelar
+            </Link>
+
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={isLoading || form_state.description.length > 1000}
+            >
+              {isLoading ? "Creando..." : "Crear workspace"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default CreateWorkspaceScreen;
