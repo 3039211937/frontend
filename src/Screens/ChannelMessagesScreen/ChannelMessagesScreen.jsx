@@ -23,41 +23,11 @@ const ChannelMessagesScreen = () => {
   const currentChannel = channelList?.find((c) => c._id === channel_id);
 
   /* =========================
-     GET CURRENT USER (FROM TOKEN)
-  ========================= */
-
-  const getCurrentUser = () => {
-    try {
-      const token = sessionStorage.getItem("auth_token");
-      if (!token) return null;
-
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      return payload;
-    } catch {
-      return null;
-    }
-  };
-
-  /* =========================
-     WRAP CREATE MESSAGE
+     CREATE MESSAGE (CLEAN)
   ========================= */
 
   const handleCreateMessage = async (messageText) => {
-    const user = getCurrentUser();
-
     await onCreateNewMessage(messageText);
-
-    // 🔥 FIX: patch last message locally (optimistic UI)
-    if (user && channelMessages.length > 0) {
-      const lastMessage = channelMessages[channelMessages.length - 1];
-
-      if (!lastMessage.user) {
-        lastMessage.user = {
-          username: user.username,
-          email: user.email,
-        };
-      }
-    }
   };
 
   /* =========================

@@ -8,7 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import LoginScreen from "./Screens/LoginScreen/LoginScreen";
 import RegisterScreen from "./Screens/RegisterScreen/RegisterScreen";
 import AcceptInvitationScreen from "./Screens/AcceptInvitationScreen/AcceptInvitationScreen";
-import VerifyEmailScreen from "./Screens/VerifyEmailScreen/VerifyEmailScreen"; // ✅ FIX
+import VerifyEmailScreen from "./Screens/VerifyEmailScreen/VerifyEmailScreen";
 
 /* =========================
    CONTEXTOS Y MIDDLEWARE
@@ -32,7 +32,9 @@ import CreateChannelScreen from "./Screens/CreateChannelScreen/CreateChannelScre
    CHAT DEL CANAL
 ========================= */
 
-import ChannelDetailContextProvider from "./Context/ChannelDetailContext";
+// ✅ FIXED IMPORT
+import ChannelDetailContextProvider from "./Context/ChannelDetailContextProvider";
+
 import ChannelMessagesScreen from "./Screens/ChannelMessagesScreen/ChannelMessagesScreen";
 
 /* =========================
