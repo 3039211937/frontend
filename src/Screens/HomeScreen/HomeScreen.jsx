@@ -20,7 +20,12 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if (workspace_list?.data?.workspaces) {
-      setWorkspaces(workspace_list.data.workspaces);
+      const normalized = workspace_list.data.workspaces.map((w) => ({
+        ...w,
+        description: w.description || w.workspace_description || "",
+      }));
+
+      setWorkspaces(normalized);
     }
   }, [workspace_list]);
 
@@ -34,7 +39,7 @@ const HomeScreen = () => {
       html: `
         <input id="swal-title" class="swal2-input" placeholder="Título" value="${workspace.workspace_title}">
         <input id="swal-image" class="swal2-input" placeholder="Imagen URL" value="${workspace.image || ""}">
-        <textarea id="swal-description" class="swal2-textarea" placeholder="Descripción">${workspace.description || ""}</textarea>
+        <textarea id="swal-description" class="swal2-textarea" placeholder="Descripción">${workspace.description}</textarea>
       `,
       focusConfirm: false,
       showCancelButton: true,
@@ -62,6 +67,7 @@ const HomeScreen = () => {
                 ...w,
                 workspace_title: formValues.title,
                 description: formValues.description,
+                workspace_description: formValues.description, // ✅ keep both in sync
                 image: formValues.image,
               }
             : w,
